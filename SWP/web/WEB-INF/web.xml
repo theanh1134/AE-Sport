@@ -4,7 +4,7 @@
         <servlet-name>ManageSaleProductHomePage</servlet-name>
         <servlet-class>controllerr.ManageSaleProductHomePage</servlet-class>
     </servlet>
-       <servlet>
+    <servlet>
         <servlet-name>HomePage</servlet-name>
         <servlet-class>controllerr.HomePage</servlet-class>
     </servlet>
@@ -171,6 +171,10 @@
     <servlet>
         <servlet-name>ManagerDiscount</servlet-name>
         <servlet-class>admin.ManagerDiscount</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Setting</servlet-name>
+        <servlet-class>controllerr.Setting</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomePage</servlet-name>
@@ -343,6 +347,10 @@
     <servlet-mapping>
         <servlet-name>ManagerDiscount</servlet-name>
         <url-pattern>/managerdiscount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Setting</servlet-name>
+        <url-pattern>/Setting</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

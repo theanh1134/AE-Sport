@@ -258,7 +258,7 @@
                                 <span> Tin Tức</span>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item position-relative">
                             <a href="RequestsBlog?mode=1" class="nav-link" >
                                 <div class="icon-wrap">
@@ -287,6 +287,17 @@
                                 <%=numberRequestDelete %>
                             </span>
                         </li>
+
+                        <li class="nav-item position-relative">
+                            <a href="Setting" class="nav-link " >
+                                <div class="icon-wrap">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                </div>
+                                <span> Cài  Đặt Trang Chủ</span>
+                            </a>
+
+                        </li>
+
                     </ul>
 
                     <hr>

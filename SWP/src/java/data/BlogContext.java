@@ -400,10 +400,6 @@ public class BlogContext extends DBContext {
         return list;
     }
     
-    
-    
-    
-
     public void updateStatusBlog(int Blog_ID, String status, String type) {
         LocalDateTime now = LocalDateTime.now();
         Timestamp sqlTimestamp = Timestamp.valueOf(now);

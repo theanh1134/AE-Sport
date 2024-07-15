@@ -35,6 +35,16 @@ public class UserAccount {
         this.status = status;
         this.dateCreate = dateCreate;
     }
+    
+    public UserAccount(int use_ID, String password, String userName, String full_Name, String email, String phone_number, String img) {
+        this.use_ID = use_ID;
+        this.password = password;
+        this.userName = userName;
+        this.full_Name = full_Name;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.img = img;   
+    }
      public UserAccount( String password, String userName, String full_Name, String email, String phone_number, String img, String status, Date dateCreate) {    
         this.password = password;
         this.userName = userName;
@@ -46,15 +56,16 @@ public class UserAccount {
         this.dateCreate = dateCreate;
     }
 
-    public UserAccount(int use_ID, String address, String password, String userName, String full_Name, String email, String phone_number) {
-        this.use_ID = use_ID;
-        this.address = address;
-        this.password = password;
-        this.userName = userName;
-        this.full_Name = full_Name;
-        this.email = email;
-        this.phone_number = phone_number;
-    }
+    
+//    public UserAccount(int use_ID, String address, String password, String userName, String full_Name, String email, String phone_number) {
+//        this.use_ID = use_ID;
+//        this.address = address;
+//        this.password = password;
+//        this.userName = userName;
+//        this.full_Name = full_Name;
+//        this.email = email;
+//        this.phone_number = phone_number;
+//    }
 
     public UserAccount(int use_ID, String address, String full_Name, String email, String phone_number) {
         this.use_ID = use_ID;
@@ -64,6 +75,7 @@ public class UserAccount {
         this.phone_number = phone_number;
     }
 
+    
     public String getImg() {
         return img;
     }

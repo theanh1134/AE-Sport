@@ -68,14 +68,32 @@ public class SettingContext extends DBContext.DBContext {
     public void addImg(String type, String img) {
 
         try {
-            String sql = "DELETE FROM [dbo].[ImgSetting]\n"
-                    + "      WHERE type=? and img=?";
+            String sql = "INSERT INTO [dbo].[ImgSetting]\n"
+                    + "           ([img]\n"
+                    + "           ,[type])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, type);
-            stm.setString(2, img);
+            stm.setString(1, img);
+            stm.setString(2, type);
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(SettingContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
+
+    public void updateLogo(String img) {
+        try {
+            String sql = "UPDATE [dbo].[ImgSetting]\n"
+                    + "   SET [img] = ?\n"
+                    + " WHERE [type]='logo'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, img);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+}

@@ -3,12 +3,19 @@
     Created on : May 30, 2024, 12:09:04 AM
     Author     : Hoàng Sơn
 --%>
+
+
+<%@page import="data.SettingContext"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <%
+            SettingContext settingDB = new SettingContext();
+            String logo = settingDB.getLogo();
 
+        %>
     </head>
     <body>
         <footer class="row bg-black row justify-content-center">
@@ -18,7 +25,7 @@
                 <div class="d-flex flex-column align-items-center">
                     <a href="HomePage">
                         <img
-                            src="img/logo/den2.png"
+                            src="img/logo/<%=logo %>"
                             alt="Home"
                             width="300px"
                             height="294px"

@@ -3,6 +3,7 @@
     Created on : May 30, 2024, 12:07:15 AM
     Author     : Hoàng Sơn
 --%>
+<%@page import="data.SettingContext"%>
 <%@page import="entity.SubCategory"%>
 <%@page import="Model.Category"%>
 <%@page import="data.CategoryContext"%>
@@ -104,6 +105,8 @@
             ArrayList<Category> listCateMale = cateDB.getCategorys("nam");
             ArrayList<Category> listCateFemale = cateDB.getCategorys("nu");
             ArrayList<Category> listCateAccessory = cateDB.getCategorys("phu_kien");
+            SettingContext settingDB = new SettingContext();
+            String logo = settingDB.getLogo();
         %>
     </head>
     <body>
@@ -143,7 +146,7 @@
                 <div class="container-fluid row">
                     <div class="col-2 d-flex justify-content-end">
                         <a href="HomePage">
-                            <img src="img/logo/trang.png" alt="Home" width="180" height="150" />
+                            <img src="img/logo/<%=logo%>" alt="Home" width="180" height="150" />
                         </a>
                     </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -209,10 +212,14 @@
                             <li class="nav-item mx-5 dropdown py-3">
                                 <a class="text-decoration-none text-black" role="button" aria-expanded="false" data-bs-popper="static">PHỤ KIỆN</a>
                                 <ul class="dropdown-menu transition-5 fs-5">
-                                    <li><a class="dropdown-item" href="#">Tất</a></li>
-                                    <li><a class="dropdown-item" href="#">Balo</a></li>
-                                    <li><a class="dropdown-item" href="#">Vợt</a></li>
-                                    <li><a class="dropdown-item" href="#">Mũ</a></li>
+                                    <%
+                                        for (Category cate : listCateAccessory) {%>
+                                    <li><a class="dropdown-item" href="#"><%=cate.getCategory_Name()%></a></li>
+
+
+                                    <%  }%>
+
+
                                 </ul>
                             </li>
                         </ul>

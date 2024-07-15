@@ -21,17 +21,56 @@ public class Setting extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         SettingContext settingDB = new SettingContext();
+        if ("logo".equals(req.getParameter("logo"))) {
+            String img = req.getParameter("img");
+            settingDB.updateLogo(img);
+        }
+        if ("delete".equals(req.getParameter("type"))) {
+            String slide1 = req.getParameter("slide1");
+            if (slide1 != null) {
+                settingDB.deleteImg("slide1", slide1);
+            }
+            String slide2 = req.getParameter("slide2");
+            if (slide2 != null) {
+                settingDB.deleteImg("slide2", slide2);
+            }
+            String slide3 = req.getParameter("slide3");
+            if (slide3 != null) {
+                settingDB.deleteImg("slide3", slide3);
+            }
+            String slide4 = req.getParameter("slide4");
+            if (slide4 != null) {
+                settingDB.deleteImg("slide4", slide4);
+            }
+        }
+        if ("add".equals(req.getParameter("type"))) {
 
-        String slide1 = req.getParameter("slide1");
-        String slide2 = req.getParameter("slide2");
+            if ("slide1".equals(req.getParameter("slide1"))) {
 
-        if (slide1 != null) {
-            settingDB.deleteImg("slide1", slide1);
+                String img = req.getParameter("img");
+                settingDB.addImg("slide1", img);
+
+            }
+            if ("slide2".equals(req.getParameter("slide2"))) {
+
+                String img = req.getParameter("img");
+                settingDB.addImg("slide2", img);
+
+            }
+            if ("slide3".equals(req.getParameter("slide3"))) {
+
+                String img = req.getParameter("img");
+                settingDB.addImg("slide3", img);
+
+            }
+            if ("slide4".equals(req.getParameter("slide4"))) {
+
+                String img = req.getParameter("img");
+                settingDB.addImg("slide4", img);
+
+            }
         }
 
-        if (slide2 != null) {
-            settingDB.deleteImg("slide2", slide2);
-        }
         resp.sendRedirect("Setting");
     }
 
@@ -41,7 +80,7 @@ public class Setting extends HttpServlet {
         String logo = settingDB.getLogo();
         req.setAttribute("logo", logo);
         ArrayList<String> slide1 = settingDB.getSilde("slide1");
-        System.out.println(slide1);
+
         req.setAttribute("slide1", slide1);
         ArrayList<String> slide2 = settingDB.getSilde("slide2");
         req.setAttribute("slide2", slide2);

@@ -65,4 +65,17 @@ public class SettingContext extends DBContext.DBContext {
 
     }
 
-}
+    public void addImg(String type, String img) {
+
+        try {
+            String sql = "DELETE FROM [dbo].[ImgSetting]\n"
+                    + "      WHERE type=? and img=?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, type);
+            stm.setString(2, img);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }

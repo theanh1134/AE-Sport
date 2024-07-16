@@ -4,6 +4,8 @@
  */
 package controllerr;
 
+import Model.UserAccount;
+import data.AuthorizationContext;
 import data.ProductContext;
 import data.SettingContext;
 import entity.product;
@@ -23,9 +25,17 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(request.getSession().getAttribute("CRRAccount"));
+        AuthorizationContext AuthorizationDB = new AuthorizationContext();
 
-        request.getRequestDispatcher("view/HomePage/homePage.jsp").forward(request, response);
+        UserAccount account = (UserAccount) request.getSession().getAttribute("CRRAccount");
+        if (account != null) {
+            if ("admin".equals(AuthorizationDB.getRole(account.getUse_ID()))) {
+                response.sendRedirect("manageruseraccount");
+            }
+        } else {
+            request.getRequestDispatcher("view/HomePage/homePage.jsp").forward(request, response);
+        }
+
     }
 
     /**

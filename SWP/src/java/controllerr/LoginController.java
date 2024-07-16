@@ -46,11 +46,12 @@ public class LoginController extends HttpServlet {
         String pass = request.getParameter("password");
         String uName = request.getParameter("userName");
         UserAccount U = ADAO.CheckLogin(uName, pass);
-        System.out.println(U);
+
         // check acccount có tồn tại hay không
         if (U != null) {
             response.getWriter().write("PASS");
             request.getSession().setAttribute("CRRAccount", U);
+
         } else {
             response.getWriter().write("Inorrect username or password!!");
         }

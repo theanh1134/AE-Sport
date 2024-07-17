@@ -200,11 +200,6 @@
         <servlet-name>ViewProductBybutton</servlet-name>
         <servlet-class>controllerr.ViewProductBybutton</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>Setting</servlet-name>
-        <servlet-class>controllerr.Setting</servlet-class>
-    </servlet>
-
     <servlet-mapping>
         <servlet-name>HomePage</servlet-name>
         <url-pattern>/HomePage</url-pattern>
@@ -405,11 +400,6 @@
         <servlet-name>ViewProductBybutton</servlet-name>
         <url-pattern>/productList</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Setting</servlet-name>
-        <url-pattern>/Setting</url-pattern>
-    </servlet-mapping>
-
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

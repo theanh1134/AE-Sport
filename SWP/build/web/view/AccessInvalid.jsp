@@ -82,7 +82,7 @@
     </g>
     </svg>
     <h1> Không có quyền truy cập!</h1>
-    <h2>Về  <a target="_blank" href="http://localhost:9999/SWP/HomePage">Trang Chủ !</a></h2>
+    <h2>Về  <a href="http://localhost:9999/SWP/HomePage">Trang Chủ !</a></h2>
     <script>
         var root = document.documentElement;
         var eyef = document.getElementById('eyef');

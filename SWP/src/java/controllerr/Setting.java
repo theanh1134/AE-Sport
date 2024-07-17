@@ -5,11 +5,13 @@
 package controllerr;
 
 import data.SettingContext;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 /**
@@ -20,6 +22,7 @@ public class Setting extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         SettingContext settingDB = new SettingContext();
 
         if ("logoh".equals(req.getParameter("logo"))) {
@@ -78,10 +81,14 @@ public class Setting extends HttpServlet {
         }
 
         resp.sendRedirect("Setting");
+
+        req.getRequestDispatcher("view/HomePage/Setting.jsp").forward(req, resp);
+
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         SettingContext settingDB = new SettingContext();
         String logoh = settingDB.getLogo("logoh");
         req.setAttribute("logoh", logoh);

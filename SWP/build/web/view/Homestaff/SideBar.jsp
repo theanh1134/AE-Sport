@@ -288,11 +288,16 @@
                             </span>
                         </li>
 
-                        <li class="nav-item position-relative">
+
+
+
+                        <li class="nav-item ">
+
                             <a href="Setting" class="nav-link " >
                                 <div class="icon-wrap">
                                     <i class="fas fa-tachometer-alt"></i>
                                 </div>
+
                                 <span> Cài  Đặt Trang Chủ</span>
                             </a>
 

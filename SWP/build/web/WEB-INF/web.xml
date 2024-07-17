@@ -200,7 +200,7 @@
         <servlet-name>ViewProductBybutton</servlet-name>
         <servlet-class>controllerr.ViewProductBybutton</servlet-class>
     </servlet>
-   <servlet>
+    <servlet>
         <servlet-name>Setting</servlet-name>
         <servlet-class>controllerr.Setting</servlet-class>
     </servlet>

@@ -165,12 +165,12 @@
             ArrayList<String> slide4 =  settingDB.getSilde("slide4");
         %>
     </head>
+
     <body>
         <jsp:include page="header.jsp"/>
         <div id="slide-fist" class="carousel slide  m-200" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <%
-              
                                for (int idx = 0; idx < slide1.size(); idx++) {
                                    String slide = slide1.get(idx);
                 %>
@@ -180,15 +180,6 @@
                 <%
                     }
                 %>
-
-
-
-
-
-
-
-
-
 
             </div>
             <button

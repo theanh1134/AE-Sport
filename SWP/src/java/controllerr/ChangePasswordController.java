@@ -9,27 +9,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class ChangePasswordController extends HttpServlet {
+
     private AccountDAO ADAO;
 
     @Override
     public void init() throws ServletException {
         ADAO = new AccountDAO();
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         // This method is not needed for now.
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.sendRedirect("view/ViewProfile.jsp");
-    } 
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String newPassword = request.getParameter("pass");
         String userName = request.getParameter("uName");
         String oldPassword = request.getParameter("oldpass");

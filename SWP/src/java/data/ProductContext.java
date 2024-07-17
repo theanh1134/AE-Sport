@@ -321,25 +321,14 @@ public class ProductContext extends DBContext.DBContext {
 
     public void updateDiscountProduct(int id, int discount) {
         try {
-            String sql = "INSERT INTO [dbo].[Discount]\n"
-                    + "           ([discount_amount])\n"
-                    + "     VALUES\n"
-                    + "           (?)";
+            String sql = "UPDATE [dbo].[Product]\n"
+                    + "   SET \n"
+                    + "      [discount_ID] = ?\n"
+                    + " WHERE product_ID=?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, discount);
+            stm.setInt(2, id);
             stm.executeUpdate();
-            int index = getLastIDDisCount();
-
-            String sqlUpdate = "UPDATE [dbo].[Product]\n"
-                    + "   SET \n"
-                    + "      \n"
-                    + "      [discount_ID] = ?\n"
-                    + "     \n"
-                    + " WHERE [product_ID]=?";
-            PreparedStatement stmUpdate = connection.prepareStatement(sqlUpdate);
-            stmUpdate.setInt(1, index);
-            stmUpdate.setInt(2, id);
-            stmUpdate.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -7,7 +7,7 @@ function Login() {
     let password = $('#Password').val()
     // gửi request tới controller ( chạy ngầm dưới network )
     $.ajax({
-            url: '/SWP/Login',
+        url: '/SWP/Login',
         method: 'POST',
         data: {Action: "Login", userName: userName, password: password},
         success: function (data) {
@@ -15,7 +15,6 @@ function Login() {
                 let mess = $("#mess")
                 IncorrectPass(); // mỗi đănng nhập sai gọi hàm để giới hạn số lần đăng nhập
                 mess.removeClass("fade").text(data)
-
                 setTimeout(() => {
                     mess.addClass("fade")
                 }, 2000);
@@ -156,23 +155,23 @@ function validatePhoneNumber(phoneNumber) {
     return phoneRegex.test(phoneNumber);
 }
 
-function IncorrectPass(){
+function IncorrectPass() {
     let btnLogin = document.querySelector("#BtnLogin")
     let messageDiv = document.querySelector('#MessageLogin')
     attemptCount++; // đếm số lần sai mật khẩu
-      if (attemptCount >= maxAttempts) { //nếu vực quá số lần cho phép
-          // hiện thông báo đợi
+    if (attemptCount >= maxAttempts) { //nếu vực quá số lần cho phép
+        // hiện thông báo đợi
         messageDiv.innerHTML = 'Too many incorrect attempts. Please wait 10 seconds.';
         btnLogin.disabled = true; // tắt trạng thái nút login kh cho bấm
         this.disabled = true;
 
         setTimeout(() => { // sau 10s thì bặt trạng thái login lại và xóa message
-          btnLogin.disabled = false;
-          this.disabled = false;
-          attemptCount = 0;
-          messageDiv.innerHTML = '';
+            btnLogin.disabled = false;
+            this.disabled = false;
+            attemptCount = 0;
+            messageDiv.innerHTML = '';
         }, lockoutTime);
-      } else {
+    } else {
         messageDiv.innerHTML = `Incorrect password. You have ${maxAttempts - attemptCount} attempts left.`;
-      }
+    }
 }

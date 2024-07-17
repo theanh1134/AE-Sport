@@ -32,7 +32,14 @@ public class HomePage extends HttpServlet {
             if ("admin".equals(AuthorizationDB.getRole(account.getUse_ID()))) {
                 response.sendRedirect("manageruseraccount");
             }
-        } else {
+            if ("user".equals(AuthorizationDB.getRole(account.getUse_ID()))) {
+                request.getRequestDispatcher("view/HomePage/homePage.jsp").forward(request, response);
+            }
+            if (AuthorizationDB.getRole(account.getUse_ID()).contains("nhan_vien")) {
+                response.sendRedirect("HomeStaff");
+            }
+        }
+        if (account == null) {
             request.getRequestDispatcher("view/HomePage/homePage.jsp").forward(request, response);
         }
 

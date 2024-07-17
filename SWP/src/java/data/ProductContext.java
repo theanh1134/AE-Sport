@@ -322,11 +322,10 @@ public class ProductContext extends DBContext.DBContext {
     public ArrayList<Size> getSizebyProductId(int id) {
         ArrayList<Size> list = new ArrayList<>();
         try {
-            String sql = "SELECT *\n"
-                    + "  FROM [dbo].[Size] s\n"
-                    + "  left join [dbo].[Product_Size] ps\n"
-                    + "  on s.size_ID=ps.size_ID\n"
-                    + "  where ps.product_ID=?";
+            String sql = "SELECT DISTINCT s.size_ID, s.size_name\n"
+                    + "FROM [dbo].[Size_Color] sc \n"
+                    + "LEFT JOIN [dbo].[Size] s ON s.size_ID = sc.size_id\n"
+                    + "WHERE sc.product_ID = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
@@ -346,11 +345,11 @@ public class ProductContext extends DBContext.DBContext {
     public ArrayList<Color> getColorbyProductId(int id) {
         ArrayList<Color> list = new ArrayList<>();
         try {
-            String sql = "SELECT *\n"
-                    + "  FROM [dbo].[Color] c\n"
-                    + "  join [dbo].[Product_Color] pc\n"
-                    + "  on c.color_id= pc.color_id\n"
-                    + "  where pc.product_ID=?";
+            String sql = "SELECT DISTINCT c.color_id,c.color_Name,c.color_code\n"
+                    + "FROM [dbo].[Size_Color] sc \n"
+                    + "LEFT JOIN [dbo].[Color] c\n"
+                    + "on c.color_id =sc.color_id\n"
+                    + "WHERE sc.product_ID = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();

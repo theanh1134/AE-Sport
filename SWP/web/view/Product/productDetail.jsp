@@ -144,8 +144,8 @@
                         <div class="d-flex mt-3 justify-content-start">
                             <c:forEach var="color" items="${listColor}">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" id="radio${color.color_Name}" name="color" value="${color.color_Name}">
-                                    <label class="form-check-label" style="background-color:${color.color_Name}; width: 30px; height: 30px" for="radio${color.color_Name}"></label>
+                                    <input type="radio" class="form-check-input" id="radio${color.color_Name}" name="color" value="${color.getColor_ID()}">
+                                    <label class="form-check-label" style="background-color:${color.getCode()}; width: 30px; height: 30px" for="radio${color.color_Name}"></label>
                                 </div>
                             </c:forEach>
                         </div>

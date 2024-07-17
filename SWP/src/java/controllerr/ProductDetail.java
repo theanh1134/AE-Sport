@@ -1,8 +1,9 @@
-
 package controllerr;
 
 import DBContext.DAOFeedback;
+import Model.Color;
 import Model.Feedback;
+import Model.Size;
 import data.ImgContext;
 import data.ProductContext;
 import entity.ProductSizeColor;
@@ -17,7 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDetail extends HttpServlet {
- DAOFeedback daofb = new DAOFeedback();
+
+    DAOFeedback daofb = new DAOFeedback();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,20 +29,21 @@ public class ProductDetail extends HttpServlet {
         ImgContext imgDB = new ImgContext();
 
         product productDetail = productDB.getProduct(Integer.parseInt(productId));
+        ArrayList<Size> listSize = productDB.getSizebyProductId(Integer.parseInt(productId));
         ArrayList<img> listImg = imgDB.getImgsofProduct(Integer.parseInt(productId));
+        ArrayList<Color> listColor = productDB.getColorbyProductId(Integer.parseInt(productId));
 
-        ArrayList<ProductSizeColor> listSizeandColorofProduct = productDB.getColorandSizeofProduct(Integer.parseInt(productId));
         List<Feedback> listbyproID = daofb.getFeedbackByProductId(Integer.parseInt(productId));
-        
-        request.setAttribute("listbyproID", listbyproID);
-        request.setAttribute("listSizeandColorofProduct", listSizeandColorofProduct);
-        request.setAttribute("listImg", listImg);
 
+        request.setAttribute("listbyproID", listbyproID);
+        System.out.println(listColor);
+        request.setAttribute("listSize", listSize);
+        request.setAttribute("listImg", listImg);
+        request.setAttribute("listColor", listColor);
         request.setAttribute("productDetail", productDetail);
 
         request.getRequestDispatcher("/view/Product/productDetail.jsp").forward(request, response);
-        
-   
+
     }
 
     @Override

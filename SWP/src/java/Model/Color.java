@@ -9,8 +9,18 @@ package Model;
  * @author admin
  */
 public class Color {
+
     private int color_ID;
     private String color_Name;
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Color() {
     }
@@ -35,6 +45,5 @@ public class Color {
     public void setColor_Name(String color_Name) {
         this.color_Name = color_Name;
     }
-    
-    
+
 }

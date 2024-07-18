@@ -106,15 +106,16 @@
                                     <span><%= elem.getAuthorString()%></span>
 
                                 </td>
+
                                 <td> 
                                     <span><%= elem.getDate()%></span>
-
                                 </td>
+
                                 <td> 
                                     <span><%= elem.getNumber_of_views()%></span>
                                 </td>
                                 <td style="width:8rem">
-                                    <a  id="openWindowButton<%= elem.getBlog_ID()%>" href="BlogList?blogID=<%= elem.getBlog_ID()%>"><i class="bi bi-arrow-right-circle-fill fs-3"></i></a>
+                                    <a   target="_blank" href="BlogList?blogID=<%= elem.getBlog_ID()%>"><i class="bi bi-arrow-right-circle-fill fs-3"></i></a>
                                 </td>
                                 <td class="text-start"  style="width: 4rem"> 
                                     <div class="btn-group" role="group" >

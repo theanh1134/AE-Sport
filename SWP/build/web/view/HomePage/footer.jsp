@@ -3,12 +3,18 @@
     Created on : May 30, 2024, 12:09:04 AM
     Author     : Hoàng Sơn
 --%>
+
+
+<%@page import="data.SettingContext"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+        <%
+            SettingContext settingDB = new SettingContext();
+            String logo = settingDB.getLogo("logof");
+        %>
     </head>
     <body>
         <footer class="row bg-black row justify-content-center">
@@ -18,7 +24,7 @@
                 <div class="d-flex flex-column align-items-center">
                     <a href="HomePage">
                         <img
-                            src="img/logo/den2.png"
+                            src="img/logo/<%=logo %>"
                             alt="Home"
                             width="300px"
                             height="294px"
@@ -57,42 +63,42 @@
                 <div class="d-flex flex-column mt-3">
                     <i class="bi bi-fast-forward p-2"
                        ><a
-                            href=""
+                            href="/SWP/oderview"
                             class="ms-4 text-white text-decoration-none text-opacity-75"
                             >Hướng dẫn đặt hàng</a
                         ></i
                     >
                     <i class="bi bi-fast-forward p-2"
                        ><a
-                            href=""
+                            href="/SWP/choosesize"
                             class="ms-4 text-white text-decoration-none text-opacity-75"
                             >Hướng dẫn chọn size</a
                         ></i
                     >
                     <i class="bi bi-fast-forward p-2"
                        ><a
-                            href=""
+                            href="/SWP/help/support.jsp"
                             class="ms-4 text-white text-decoration-none text-opacity-75"
                             >Câu hỏi thường gặp</a
                         ></i
                     >
                     <i class="bi bi-fast-forward p-2"
                        ><a
-                            href=""
+                            href="/SWP/help/support.jsp"
                             class="ms-4 text-white text-decoration-none text-opacity-75"
                             >Chính sách đổi hàng</a
                         ></i
                     >
                     <i class="bi bi-fast-forward p-2"
                        ><a
-                            href=""
+                            href="/SWP/help/support.jsp"
                             class="ms-4 text-white text-decoration-none text-opacity-75"
                             >Thanh toán - Giao hàng</a
                         ></i
                     >
                     <i class="bi bi-fast-forward p-2"
                        ><a
-                            href=""
+                            href="/SWP/help/support.jsp"
                             class="ms-4 text-white text-decoration-none text-opacity-75"
                             >Chính sách đổi hàng</a
                         ></i

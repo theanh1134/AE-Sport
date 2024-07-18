@@ -1,6 +1,8 @@
 package controllerr;
 
 import Model.Category;
+import Model.UserAccount;
+import data.AuthorizationContext;
 import data.CategoryContext;
 import data.ProductContext;
 import entity.SubCategory;
@@ -18,41 +20,59 @@ public class ManageHotProductHomePage extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductContext p = new ProductContext();
         CategoryContext b = new CategoryContext();
+        
+        AuthorizationContext db = new AuthorizationContext();
+        UserAccount account = (UserAccount) req.getSession().getAttribute("CRRAccount");
+        if (account != null) {
+            String servletPath = req.getServletPath();
+            servletPath = servletPath.substring(1);
+            String role = db.getRole(account.getUse_ID());
+            int idRole = db.getRoleIDbyRoleName(role);
+            ArrayList<String> fetures = db.getFeature(idRole);
 
-        String type = req.getParameter("type");
-        String checkProducts = req.getParameter("checkProducts");
-        String select1 = req.getParameter("select1");
-        String productID = req.getParameter("productID");
-        String category = req.getParameter("category");
-        String Subcategory = req.getParameter("Subcategory");
+            if (fetures.contains(servletPath)) {
+                String type = req.getParameter("type");
+                String checkProducts = req.getParameter("checkProducts");
+                String select1 = req.getParameter("select1");
+                String productID = req.getParameter("productID");
+                String category = req.getParameter("category");
+                String Subcategory = req.getParameter("Subcategory");
 
-        if (select1 != null && !select1.isEmpty() && productID != null && !productID.isEmpty()
-                && category != null && !category.isEmpty() && Subcategory != null && !Subcategory.isEmpty()
-                && checkProducts != null && !checkProducts.isEmpty()) {
+                if (select1 != null && !select1.isEmpty() && productID != null && !productID.isEmpty()
+                        && category != null && !category.isEmpty() && Subcategory != null && !Subcategory.isEmpty()
+                        && checkProducts != null && !checkProducts.isEmpty()) {
 
-            req.setAttribute("select1", select1);
-            req.setAttribute("category", category);
-            req.setAttribute("Subcategory", Subcategory);
+                    req.setAttribute("select1", select1);
+                    req.setAttribute("category", category);
+                    req.setAttribute("Subcategory", Subcategory);
 
-            ArrayList<Category> listCA = b.getCategorys(select1);
-            req.setAttribute("listCA", listCA);
+                    ArrayList<Category> listCA = b.getCategorys(select1);
+                    req.setAttribute("listCA", listCA);
 
-            ArrayList<SubCategory> listSub = b.getSubCategorys(Integer.parseInt(category));
-            req.setAttribute("listSub", listSub);
+                    ArrayList<SubCategory> listSub = b.getSubCategorys(Integer.parseInt(category));
+                    req.setAttribute("listSub", listSub);
 
-            if ("1".equals(type)) {
+                    if ("1".equals(type)) {
 
-                p.updateProductonHome(Integer.parseInt(productID), "true");
+                        p.updateProductonHome(Integer.parseInt(productID), "true");
+                    }
+
+                    ArrayList<product> products = p.getproductByCondition(Integer.parseInt(Subcategory), Integer.parseInt(category), select1, "hot");
+                    req.setAttribute("products", products);
+                }
+
+                ArrayList<product> productsHotHomePage = p.getProductsonHomePage("hot");
+                req.setAttribute("productsHotHomePage", productsHotHomePage);
+
+                req.getRequestDispatcher("view/Product/managerHotProductOnHome.jsp").forward(req, resp);
+            } else {
+                req.getRequestDispatcher("view/AccessInvalid.jsp").forward(req, resp);
             }
+        } else {
+            req.getRequestDispatcher("view/AccessInvalid.jsp").forward(req, resp);
 
-            ArrayList<product> products = p.getproductByCondition(Integer.parseInt(Subcategory), Integer.parseInt(category), select1, "hot");
-            req.setAttribute("products", products);
         }
 
-        ArrayList<product> productsHotHomePage = p.getProductsonHomePage("hot");
-        req.setAttribute("productsHotHomePage", productsHotHomePage);
-
-        req.getRequestDispatcher("view/Product/managerHotProductOnHome.jsp").forward(req, resp);
     }
 
     @Override

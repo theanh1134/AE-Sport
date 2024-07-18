@@ -1,9 +1,3 @@
-<%-- 
-    Document   : ManagerProduct
-    Created on : Jun 3, 2024, 5:33:35 PM
-    Author     : admin
---%>
-
 <%@page import="Model.ImgProduct"%>
 <%@page import="Model.SubCategory"%>
 <%@page import="Model.Category"%>
@@ -109,8 +103,6 @@
                                     }
                                 %>
                             </select>
-
-
                             <select name="status" class="search-input">
                                 <option value="">Chọn trạng thái</option>
                                 <option value="New" ${param.status == "New" ? "selected" : ""}>New</option>
@@ -118,7 +110,6 @@
                                 <option value="Sale" ${param.status == "Sale" ? "selected" : ""}>Sale</option>
                                 <option value="Hide" ${param.status == "Hide" ? "selected" : ""}>Hide</option>
                             </select>
-
                             <input type="submit" value="Search" class="search-button">
                         </form>
                         <button style="background-color: #212529; border-bottom: none; height: 37px; margin-right: 3%" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">Add</button>
@@ -145,8 +136,6 @@
                                     }
                                 %>
                             </select>
-
-
                             <select name="status" class="search-input">
                                 <option value="">Chọn trạng thái</option>
                                 <option value="New" ${param.status == "New" ? "selected" : ""}>New</option>
@@ -154,7 +143,6 @@
                                 <option value="Sale" ${param.status == "Sale" ? "selected" : ""}>Sale</option>
                                 <option value="Hide" ${param.status == "Hide" ? "selected" : ""}>Hide</option>
                             </select>
-
                             <input type="submit" value="Search" class="search-button">
                         </form>
                         <button style="background-color: #212529; border-bottom: none; height: 37px; margin-right: 3%" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">Add</button>
@@ -201,51 +189,77 @@
                         <%
                             }
                         %>
-
-                    </table><br/>
+                    </table>
+                    <br/>
 
                     <%
-                        }
+                        int currentPage = (Integer) request.getAttribute("currentPage");
+                        int totalPages = (Integer) request.getAttribute("totalPages");
+
+                        if (totalPages > 1) {
                     %>
-
-                </div>
-            </div>
-
-
-            <div class="col-1">
-
-            </div>
-            <!-- Modal -->
-            <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addSportModalLabel">Thêm sản phẩm</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="${pageContext.request.contextPath}/managerproduct" method="post">
-                                <div class="mb-3">
-                                    <label for="numberColor" class="form-label">Nhập số lượng màu của sản </label>
-                                    <input min="1" type="number" class="form-control" id="numberColor" name="numberColor" required>
-                                </div>
-                                <button style="background-color: #212529" type="submit" class="btn btn-primary">Add</button>
-
-                            </form>
-                        </div>
+                    <div style="display: flex; justify-content: end; margin-right: 100px">
+                        <nav aria-label="Page navigation example" style="width: 30px;">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item <%= (currentPage == 1) ? "disabled" : "" %>">
+                                    <a class="page-link" href="managerproduct?page=<%= currentPage - 1 %>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <%
+                                    for (int i = 1; i <= totalPages; i++) {
+                                %>
+                                <li class="page-item <%= (currentPage == i) ? "active" : "" %>">
+                                    <a class="page-link" href="managerproduct?page=<%= i %>"><%= i %></a>
+                                </li>
+                                <%
+                                    }
+                                %>
+                                <li class="page-item <%= (currentPage == totalPages) ? "disabled" : "" %>" >
+                                    <a class="page-link" href="managerproduct?page=<%= currentPage + 1 %>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <%
+                            }
+                        }
+                        %>
                     </div>
                 </div>
             </div>
-            <script>
-
-                window.onload = function () {
-                    var errorAlert = document.getElementById('errorAlert');
-                    if (errorAlert) {
-                        setTimeout(function () {
-                            errorAlert.style.display = 'none';
-                        }, 3000);
-                    }
-                };
-            </script>
+        </div>
+        <div class="col-1"></div>
+        <!-- Modal -->
+        <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addSportModalLabel">Thêm sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="${pageContext.request.contextPath}/managerproduct" method="post">
+                            <div class="mb-3">
+                                <label for="numberColor" class="form-label">Nhập số lượng màu của sản </label>
+                                <input min="1" type="number" class="form-control" id="numberColor" name="numberColor" required>
+                            </div>
+                            <button style="background-color: #212529" type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            window.onload = function () {
+                var errorAlert = document.getElementById('errorAlert');
+                if (errorAlert) {
+                    setTimeout(function () {
+                        errorAlert.style.display = 'none';
+                    }, 3000);
+                }
+            };
+        </script>
     </body>
 </html>

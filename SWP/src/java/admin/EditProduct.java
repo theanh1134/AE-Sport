@@ -99,10 +99,10 @@ public class EditProduct extends HttpServlet {
         int pID = Integer.parseInt(request.getParameter("pID"));
 
         try {
+            // Process insert image file
             if ("1".equals(key)) {
                 int numberImg = Integer.parseInt(request.getParameter("numberImg"));
 
-                // Process each image file
                 for (int i = 1; i <= numberImg; i++) {
                     String paramName = "image" + i;
                     String filePart = request.getParameter(paramName);
@@ -110,9 +110,10 @@ public class EditProduct extends HttpServlet {
                         dao.insertImgProduct(filePart, pID);
                     }
                 }
-
                 forwardToEditProduct(request, response, pID);
                 return; // Ensure no further processing
+            
+            // Process delete image file
             } else if ("2".equals(key)) {
                 String[] imgIDs = request.getParameterValues("imgID");
                 if (imgIDs != null) {
@@ -121,9 +122,9 @@ public class EditProduct extends HttpServlet {
                         dao.deleteProductImgByimgID(iID);
                     }
                 }
-
                 forwardToEditProduct(request, response, pID);
                 return; // Ensure no further processing
+            // Process insert Product_Color_Size
             } else if ("3".equals(key)) {
                 int numberColorSize = Integer.parseInt(request.getParameter("numberColorSize"));
                 for (int i = 0; i < numberColorSize; i++) {
@@ -192,6 +193,7 @@ public class EditProduct extends HttpServlet {
             int productID = Integer.parseInt(request.getParameter("productID"));
             String productName = request.getParameter("productName");
             int categoryID = Integer.parseInt(request.getParameter("category"));
+            System.out.println("-"+categoryID);
             int discountID = Integer.parseInt(request.getParameter("discount"));
             int sportID = Integer.parseInt(request.getParameter("sport"));
             int brandID = Integer.parseInt(request.getParameter("brand"));

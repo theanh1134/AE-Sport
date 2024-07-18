@@ -169,11 +169,13 @@ public class ManagerDiscount extends HttpServlet {
 
                         dao.updateDiscount(new Discount(dID, amount, name, startDate, endDate));
                         request.setAttribute("info", "Chỉnh sửa thành công!");
+                        processRequest(request, response);
+                        return;
                     } else {
                         request.getRequestDispatcher("admin/EditDiscount.jsp?dID=" + dID).forward(request, response);
                         return;
                     }
-                    processRequest(request, response);
+                    
 
                 } catch (Exception e) {
                     request.setAttribute("error", "Thêm không thành công!" + e);

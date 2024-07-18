@@ -188,7 +188,7 @@
                                         <div class="col-sm-8">
                                             <select id="category" name="category" class="form-select" required>
                                                 <% for (SubCategory category : categories) {%>
-                                                <option value="<%= category.getCategory_ID()%>" <%= category.getCategory_ID() == product.getSubcategoryID() ? "selected" : ""%>><%= category.show()%></option>
+                                                <option value="<%= category.getSubcategory_ID()%>" <%= category.getCategory_ID() == product.getSubcategoryID() ? "selected" : ""%>><%= category.show()%></option>
                                                 <% } %>
                                             </select>
                                         </div>

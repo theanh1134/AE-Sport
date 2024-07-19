@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -41,14 +43,14 @@ public class AccountDAO extends DBContext {
             st.setString(2, password);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                UserAccount user = new UserAccount(rs.getInt("user_ID"),
-                        rs.getString("password_hash"),
-                        rs.getString("username"),
-                        rs.getString("full_name"),
-                        rs.getString("email"),
-                        rs.getString("phone_number"),
-                        rs.getString("address")
-                );
+                UserAccount user = new UserAccount();
+                user.setUse_ID(rs.getInt("user_ID"));
+                user.setPassword(rs.getString("password_hash"));
+                user.setAddress(rs.getString("address"));
+                user.setFull_Name(rs.getString("full_name"));
+                user.setPhone_number(rs.getString("phone_number"));
+                user.setUserName(rs.getString("username"));
+                user.setStatus(rs.getString("status"));
                 return user;
             }
         } catch (SQLException e) {
@@ -60,7 +62,7 @@ public class AccountDAO extends DBContext {
     public int insertUserAccount(UserAccount u) {
         int newId = 0;
         try {
-            String sql = "insert into [UserAccounts]([address],[password_hash],[username],[full_name],[email],[phone_number],[status]) values(?,?,?,?,?,?,'active')";
+            String sql = "insert into [UserAccounts]([address],[password_hash],[username],[full_name],[email],[phone_number],[status]) values(?,?,?,?,?,?,'none')";
             PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, u.getAddress());
             st.setString(2, u.getPassword());
@@ -97,6 +99,21 @@ public class AccountDAO extends DBContext {
             System.out.println(e);
         }
         return false;
+    }
+
+    public void updateStatusAccount(int id) {
+        try {
+            String sql = "UPDATE [dbo].[UserAccounts]\n"
+                    + "   SET \n"
+                    + "      [status] = 'active'\n"
+                    + "     \n"
+                    + " WHERE user_ID=?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void updateUserAccount(String newpass, int userId) {

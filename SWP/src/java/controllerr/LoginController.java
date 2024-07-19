@@ -5,8 +5,11 @@
 package controllerr;
 
 import DBContext.AccountDAO;
+import DBContext.AdminDAO;
 import Model.UserAccount;
 import Service.Email;
+import com.sun.source.tree.BreakTree;
+import data.AuthorizationContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -21,74 +24,86 @@ import java.util.logging.Logger;
  */
 public class LoginController extends HttpServlet {
 
-    private AccountDAO ADAO;
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
-        response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("Action");
-        ADAO = new AccountDAO();
-        switch (action) {
-            case "Login":
-                Login(request, response);
-                break;
-            case "Register":
-                Register(request, response);
-                break;
-            case "ForgetPasswork":
-                ForgetPasswork(request, response);
-                break;
-        }
-    }
-
     private void Login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
+        AuthorizationContext AuthorizationDB = new AuthorizationContext();
+        AccountDAO ADAO = new AccountDAO();
         String pass = request.getParameter("password");
-        String uName = request.getParameter("userName");
+        String uName = request.getParameter("username");
         UserAccount U = ADAO.CheckLogin(uName, pass);
 
-        // check acccount có tồn tại hay không
         if (U != null) {
-            response.getWriter().write("PASS");
-            request.getSession().setAttribute("CRRAccount", U);
+//            System.out.println(AuthorizationDB.getRole(U.getUse_ID()).contains("nhan_vien"));
+            if ("active".equals(U.getStatus())) {
+                request.getSession().setAttribute("CRRAccount", U);
+                if ("admin".equals(AuthorizationDB.getRole(U.getUse_ID()))) {
+                    response.sendRedirect("manageruseraccount");
+                }
+                if ("user".equals(AuthorizationDB.getRole(U.getUse_ID()))) {
+                    response.sendRedirect("HomePage");
+                }
+
+                if (AuthorizationDB.getRole(U.getUse_ID()).contains("nhan_vien")) {
+   
+                    response.sendRedirect("HomeStaff");
+                }
+            } else {
+                request.setAttribute("message", "Tài khoản chưa được xác minh.");
+                request.getRequestDispatcher("view/Login.jsp").forward(request, response);
+            }
 
         } else {
-            response.getWriter().write("Inorrect username or password!!");
+            request.setAttribute("message", "Sai tên đăng nhập hoặc nhập khẩu! Vui lòng kiểm tra lại.");
+            request.getRequestDispatcher("view/Login.jsp").forward(request, response);
         }
     }
 
     private void Register(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
-        String userName = request.getParameter("userName");
-        String userPhone = request.getParameter("userPhone");
-        String userAddress = request.getParameter("userAddress");
+        AdminDAO adminDao = new AdminDAO();
+        AccountDAO ADAO = new AccountDAO();
+        String userName = request.getParameter("username");
+        String userPhone = request.getParameter("numberphone");
+        String address = request.getParameter("address");
         String userEmail = request.getParameter("email");
-        String fullName = request.getParameter("fullName");
-        String usserPass = request.getParameter("usserPass");
-        // kiểm tra email đã được đăng ký trước đó chưa?
-        if (ADAO.GetAccountByEmail(userEmail) > 0) {
-            response.getWriter().write("Incorrect Email was existed, try again");
-            return;
-        }
-        // kiểm tra userName đã được đăng ký trước đó chưa?
-        if (ADAO.validateUserName(userName)) {
-            response.getWriter().write("Incorrect UsserName was existed, try again");
+        String fullName = request.getParameter("fullname");
+        String password = request.getParameter("password");
+        String confirm_password = request.getParameter("confirm-password");
+        String message = "";
+        if (!password.equals(confirm_password)) {
+            message = "Mật khẩu không khớp!";
+
+        } else if (ADAO.GetAccountByEmail(userEmail) > 0) {
+            message = "Email đã tồn tại, ";
+        } else if (ADAO.validateUserName(userName)) {
+            message = "tên đăng nhập  đã tồn tại";
         } else {
-            UserAccount uA = new UserAccount(userAddress, userName, usserPass, fullName, userEmail, userName);
+            UserAccount uA = new UserAccount();
+            uA.setUserName(userName);
+            uA.setAddress(address);
+            uA.setFull_Name(fullName);
+            uA.setEmail(userEmail);
+            uA.setPhone_number(userPhone);
+            uA.setPassword(confirm_password);
             // trả về id account mới vừa được insert nếu thành công
             int newIdInsert = ADAO.insertUserAccount(uA);
             if (newIdInsert > 0) {
-                // gửi email tới địa chỉ mail vừa được đăng ký
-                Email.sendEmail(userEmail, "AESport, Active you account", "Click this link to active your account: http://localhost:8080/SWP/Account?Action=ActiveAccount&AccountId=" + newIdInsert);
-                response.getWriter().write("Register successfull, please check yout email");
-            } else {
-                response.getWriter().write("Incorrect fail to register");
+                message = "Vui lòng xác nhận email! và đăng nhập lại";
+                Email.sendEmail(userEmail, "AESport, Active you account", "Click this link to active your account: http://localhost:9999/SWP/Account?Action=ActiveAccount&AccountId=" + newIdInsert);
+                adminDao.insertUserRole(newIdInsert, 6);
+                request.setAttribute("message", message);
+                request.getRequestDispatcher("view/Login.jsp").forward(request, response);
+                return;
             }
         }
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("view/Register.jsp").forward(request, response);
     }
 
     private void ForgetPasswork(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
+        AccountDAO ADAO = new AccountDAO();
+
         String emailForgot = request.getParameter("userEmail");
         int newAccID = ADAO.GetAccountByEmail(emailForgot);
         if (newAccID != 0) {
@@ -104,21 +119,29 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        request.getRequestDispatcher("view/Login.jsp").forward(request, response);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        String action = request.getParameter("action");
+        if ("login".equals(action)) {
+            try {
+                Login(request, response);
+            } catch (Exception ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        if ("register".equals(action)) {
+            try {
+                Register(request, response);
+            } catch (Exception ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     @Override

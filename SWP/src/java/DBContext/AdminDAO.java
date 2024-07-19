@@ -37,7 +37,6 @@ public class AdminDAO extends DBContext {
 
 // PRODUCT ===================================================================================================================================================
     // lấy ra tất cả ảnh của 1 product theo ID
-
     public ArrayList<ImgProduct> getImgProductByProductID(int pid) {
         ArrayList<ImgProduct> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[ImgProduct] where [product_ID]=?";
@@ -728,7 +727,7 @@ public class AdminDAO extends DBContext {
         }
         return null;
     }
-    
+
     // lấy ra 1 Discount theo tên Name
     public Discount getDiscountByName(String name) {
         String sql = "SELECT * FROM [dbo].[Discount] where [discount_Name]=?";
@@ -766,7 +765,7 @@ public class AdminDAO extends DBContext {
             throw e;
         }
     }
-    
+
     // Update 1 Discount
     public void updateDiscount(Discount d) throws Exception {
         try {
@@ -1872,6 +1871,6 @@ public class AdminDAO extends DBContext {
 //        Product p = new Product(123, "", "none", 0, "Giay Cao", 0, 1, 0);
 //        System.out.println(dao.insertProduct(p));
         System.out.println(dao.getDiscountByName("womanday"));
-              
+
     }
 }

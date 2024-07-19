@@ -23,11 +23,11 @@ import java.util.logging.Logger;
  * @author Hoàng Sơn
  */
 public class ProductContext extends DBContext.DBContext {
-    
+
     public ArrayList<product> getProductsonHomePage(String status) {
         ArrayList<product> list = new ArrayList<>();
         try {
-            
+
             String sql = "SELECT *\n"
                     + "  FROM [dbo].[Product] p\n"
                     + "  join [dbo].[Home_Products] h\n"
@@ -52,7 +52,7 @@ public class ProductContext extends DBContext.DBContext {
                     d.setDiscount_Amount(rs.getInt("discount_amount"));
                     p.setDiscount(d);
                 }
-                
+
                 list.add(p);
             }
         } catch (SQLException ex) {
@@ -60,7 +60,7 @@ public class ProductContext extends DBContext.DBContext {
         }
         return list;
     }
-    
+
     public product getProduct(int id) {
         product p = new product();
         try {
@@ -95,48 +95,14 @@ public class ProductContext extends DBContext.DBContext {
                 ca.setType(rs.getString("type"));
                 p.setCate(ca);
                 p.setDiscount(d);
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return p;
     }
-    
-    public ArrayList<ProductSizeColor> getColorandSizeofProduct(int id) {
-        ArrayList<ProductSizeColor> list = new ArrayList<>();
-        try {
-            String sql = "SELECT *\n"
-                    + "  FROM [dbo].[Size_Color] sc\n"
-                    + "  left join [dbo].[Size] s\n"
-                    + "  on s.size_ID= sc.size_id\n"
-                    + "  left join [dbo].[Color] c\n"
-                    + "  on sc.color_id=c.color_id\n"
-                    + "  where sc.product_ID=?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                ProductSizeColor psc = new ProductSizeColor();
-                psc.setProductId(rs.getInt("product_ID"));
-                
-                Color c = new Color();
-                c.setColor_ID(rs.getInt("color_id"));
-                c.setColor_Name(rs.getString("color_Name"));
-                psc.setColor(c);
-                Size s = new Size();
-                s.setSize_ID(rs.getInt("size_name"));
-                s.setSize_Name(rs.getString("size_name"));
-                psc.setSize(s);
-                psc.setQuantity(rs.getInt("quantity"));
-                list.add(psc);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return list;
-    }
-    
+
     public ArrayList<product> getproductByCondition(int Subcategory_ID, int category_ID, String type, String status) {
         ArrayList<product> list = new ArrayList<>();
         try {
@@ -171,13 +137,13 @@ public class ProductContext extends DBContext.DBContext {
                 p.setDiscount(d);
                 list.add(p);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-    
+
     public void updateProductonHome(int id, String status) {
         try {
             String sql = "UPDATE [dbo].[Home_Products]\n"
@@ -191,7 +157,7 @@ public class ProductContext extends DBContext.DBContext {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public ArrayList<product> getproductsbyStatus(String status) {
         ArrayList<product> list = new ArrayList<>();
         ImgContext imgDB = new ImgContext();
@@ -226,14 +192,14 @@ public class ProductContext extends DBContext.DBContext {
                 ca.setCategory_Name(rs.getString("category_Name"));
                 ca.setType(rs.getString("type"));
                 p.setCate(ca);
-                
+
                 if ("sale".contains(status)) {
                     Discount d = new Discount();
                     d.setDiscount_ID(rs.getInt("discount_ID"));
                     d.setDiscount_Amount(rs.getInt("discount_amount"));
                     p.setDiscount(d);
                 }
-                
+
                 list.add(p);
             }
         } catch (SQLException ex) {
@@ -241,7 +207,7 @@ public class ProductContext extends DBContext.DBContext {
         }
         return list;
     }
-    
+
     public ArrayList<product> getproductAllArrayListByCondition(int Subcategory_ID, int category_ID, String type, String status) {
         ArrayList<product> list = new ArrayList<>();
         try {
@@ -279,13 +245,13 @@ public class ProductContext extends DBContext.DBContext {
                 p.setDiscount(d);
                 list.add(p);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-    
+
     public void deleteStatusProduct(int id) {
         try {
             String sql = "UPDATE [dbo].[Product]\n"
@@ -296,12 +262,12 @@ public class ProductContext extends DBContext.DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
             stm.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateStatusProduct(int id, String status) {
         try {
             String sql = "UPDATE [dbo].[Product]\n"
@@ -313,38 +279,27 @@ public class ProductContext extends DBContext.DBContext {
             stm.setString(1, status);
             stm.setInt(2, id);
             stm.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateDiscountProduct(int id, int discount) {
         try {
-            String sql = "INSERT INTO [dbo].[Discount]\n"
-                    + "           ([discount_amount])\n"
-                    + "     VALUES\n"
-                    + "           (?)";
+            String sql = "UPDATE [dbo].[Product]\n"
+                    + "   SET \n"
+                    + "      [discount_ID] = ?\n"
+                    + " WHERE product_ID=?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, discount);
+            stm.setInt(2, id);
             stm.executeUpdate();
-            int index = getLastIDDisCount();
-            
-            String sqlUpdate = "UPDATE [dbo].[Product]\n"
-                    + "   SET \n"
-                    + "      \n"
-                    + "      [discount_ID] = ?\n"
-                    + "     \n"
-                    + " WHERE [product_ID]=?";
-            PreparedStatement stmUpdate = connection.prepareStatement(sqlUpdate);
-            stmUpdate.setInt(1, index);
-            stmUpdate.setInt(2, id);
-            stmUpdate.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public int getLastIDDisCount() {
         int index = 0;
         try {
@@ -361,6 +316,54 @@ public class ProductContext extends DBContext.DBContext {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return index;
-        
+
     }
+
+    public ArrayList<Size> getSizebyProductId(int id) {
+        ArrayList<Size> list = new ArrayList<>();
+        try {
+            String sql = "SELECT DISTINCT s.size_ID, s.size_name\n"
+                    + "FROM [dbo].[Size_Color] sc \n"
+                    + "LEFT JOIN [dbo].[Size] s ON s.size_ID = sc.size_id\n"
+                    + "WHERE sc.product_ID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Size s = new Size();
+                s.setSize_ID(rs.getInt("size_ID"));
+                s.setSize_Name(rs.getString("size_name"));
+                list.add(s);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+
+    }
+
+    public ArrayList<Color> getColorbyProductId(int id) {
+        ArrayList<Color> list = new ArrayList<>();
+        try {
+            String sql = "SELECT DISTINCT c.color_id,c.color_Name,c.color_code\n"
+                    + "FROM [dbo].[Size_Color] sc \n"
+                    + "LEFT JOIN [dbo].[Color] c\n"
+                    + "on c.color_id =sc.color_id\n"
+                    + "WHERE sc.product_ID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Color s = new Color();
+                s.setColor_ID(rs.getInt("color_id"));
+                s.setColor_Name(rs.getString("color_Name"));
+                s.setCode(rs.getString("color_code"));
+                list.add(s);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
 }

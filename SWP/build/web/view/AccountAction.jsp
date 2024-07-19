@@ -21,7 +21,7 @@
                     <h1 class="">
                         ${requestScope.MessageActive}
                     </h1>
-                    <a href="view/Login.jsp" class="btn btn-primary text-center">Back to home Page</a>
+                    <a href="/SWP/Login" class="btn btn-primary text-center">Back to home Page</a>
                 </div>
             </c:if>
             <c:if test="${requestScope.MessageReset != null}">
@@ -43,7 +43,7 @@
                                            title="Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)." 
                                            required>
                                 </div>
-                                 <div class="col-sm-3">
+                                <div class="col-sm-3">
                                     <h6 class="mb-0">Confirm Password</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">

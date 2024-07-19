@@ -4,7 +4,9 @@
  */
 package controllerr;
 
+import DBContext.AdminDAO;
 import Model.Category;
+import Model.Discount;
 import data.CategoryContext;
 import data.ProductContext;
 import entity.SubCategory;
@@ -44,6 +46,7 @@ public class ManageSaleProducts extends HttpServlet {
         String Subcategory = request.getParameter("Subcategory");
 
         request.setAttribute("select1", select1);
+
         request.setAttribute("category", category);
         request.setAttribute("Subcategory", Subcategory);
         String type = request.getParameter("type");
@@ -60,9 +63,9 @@ public class ManageSaleProducts extends HttpServlet {
             ArrayList<SubCategory> listSub = b.getSubCategorys(Integer.parseInt(category));
             request.setAttribute("listSub", listSub);
         }
-      
+
         ArrayList<product> saleProducts = p.getproductsbyStatus("sale");
-        System.out.println(saleProducts);
+
         request.setAttribute("SaleProducts", saleProducts);
         request.getRequestDispatcher("view/Product/ManageSaleProducts.jsp").forward(request, response);
     }
@@ -78,7 +81,7 @@ public class ManageSaleProducts extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        AdminDAO adminDao = new AdminDAO();
         ProductContext p = new ProductContext();
         CategoryContext b = new CategoryContext();
 
@@ -93,14 +96,17 @@ public class ManageSaleProducts extends HttpServlet {
 
         if ("1".equals(type)) {
             String productID = request.getParameter("productID");
-            System.out.println(productID);
+
             String discount = request.getParameter("discount");
             System.out.println(discount);
             p.updateDiscountProduct(Integer.parseInt(productID), Integer.parseInt(discount));
             p.updateStatusProduct(Integer.parseInt(productID), "sale");
 
         }
+
         if (select1 != null && category != null && Subcategory != null) {
+            ArrayList<Discount> listDiscount = adminDao.getAllDiscount();
+            request.setAttribute("listDiscount", listDiscount);
             ArrayList<product> products = p.getproductAllArrayListByCondition(Integer.parseInt(Subcategory), Integer.parseInt(category), select1, "normal");
             request.setAttribute("products", products);
         }

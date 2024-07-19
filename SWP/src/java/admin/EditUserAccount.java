@@ -111,7 +111,7 @@ public class EditUserAccount extends HttpServlet {
             if(img1.trim().isEmpty()){
                 img = img2;
             }
-            UserAccount userTemp = new UserAccount(userId, password, userName, fullName, email, phone, img);
+            UserAccount userTemp = new UserAccount(userId, password, userName, fullName, email, phone, img); 
             dao.updateUserAccount(userTemp);
             
             //update address

@@ -4,14 +4,13 @@
     Author     : Hoàng Sơn
 --%>
 
+<%@page import="data.SettingContext"%>
 <%@page import="entity.product"%>
 <%@page import="data.ProductContext"%>
 
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="java.util.ArrayList"%>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -156,37 +155,32 @@
 
         </style>
         <%
-        ProductContext productDB = new ProductContext();
-        ArrayList<product> productsHotHomePage = productDB.getProductsonHomePage("hot");
-        ArrayList<product> productsSaleHomePage = productDB.getProductsonHomePage("sale");
-
+            ProductContext productDB = new ProductContext();
+            ArrayList<product> productsHotHomePage = productDB.getProductsonHomePage("hot");
+            ArrayList<product> productsSaleHomePage = productDB.getProductsonHomePage("sale");
+            SettingContext settingDB = new SettingContext();
+            ArrayList<String> slide1 =  settingDB.getSilde("slide1");
+            ArrayList<String> slide2 = settingDB.getSilde("slide2");
+            ArrayList<String> slide3 =  settingDB.getSilde("slide3");
+            ArrayList<String> slide4 =  settingDB.getSilde("slide4");
         %>
     </head>
+
     <body>
         <jsp:include page="header.jsp"/>
         <div id="slide-fist" class="carousel slide  m-200" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img
-                        src="img/slide/vn.jpg"
-                        class="d-block w-100"
-                        alt="..."
-                        />
+                <%
+                               for (int idx = 0; idx < slide1.size(); idx++) {
+                                   String slide = slide1.get(idx);
+                %>
+                <div class="carousel-item <%= (idx == 0) ? "active" : "" %>">
+                    <img src="img/slide/<%= slide %>" class="d-block w-100" alt="...">
                 </div>
-                <div class="carousel-item">
-                    <img
-                        src="img/slide/nam_LE_auto_x2.png"
-                        class="d-block w-100"
-                        alt="..."
-                        />
-                </div>
-                <div class="carousel-item">
-                    <img
-                        src="img/slide/nu_LE_auto_x2_colored.jpg"
-                        class="d-block w-100"
-                        alt="..."
-                        />
-                </div>
+                <%
+                    }
+                %>
+
             </div>
             <button
                 class="carousel-control-prev"
@@ -247,27 +241,18 @@
 
         <div id="hotproduct" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img
-                        src="img/slide/img_3banner_1_LE_auto_x2_colored.png"
-                        class="d-block w-100"
-                        alt="..."
-                        />
+                <%
+              
+               for (int idx = 0; idx < slide2.size(); idx++) {
+                   String slide = slide2.get(idx);
+                %>
+                <div class="carousel-item <%= (idx == 0) ? "active" : "" %>">
+                    <img src="img/slide/<%= slide %>" class="d-block w-100" alt="...">
                 </div>
-                <div class="carousel-item">
-                    <img
-                        src="img/slide/img_3banner_2_LE_auto_x2_colored.png"
-                        class="d-block w-100"
-                        alt="..."
-                        />
-                </div>
-                <div class="carousel-item">
-                    <img
-                        src="img/slide/bongda_LE_auto_x2_colored.png"
-                        class="d-block w-100"
-                        alt="..."
-                        />
-                </div>
+                <%
+                    }
+                %>
+
             </div>
             <button
                 class="carousel-control-prev"
@@ -375,20 +360,19 @@
 
         <div id="quocgia" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img
-                        src="img/slide/AoBongDa-1_LE_auto_x2_colored.png"
-                        class="d-block w-100 h-50"
-                        alt="..."
-                        />
+                <%
+              
+            for (int idx = 0; idx < slide3.size(); idx++) {
+                String slide = slide3.get(idx);
+                %>
+                <div class="carousel-item <%= (idx == 0) ? "active" : "" %>">
+                    <img src="img/slide/<%= slide %>" class="d-block w-100" alt="...">
                 </div>
-                <div class="carousel-item">
-                    <img
-                        src="img/slide/copa-america-euro-olympic_LE_auto_x2_colored.png"
-                        class="d-block w-100"
-                        alt="..."
-                        />
-                </div>
+                <%
+                    }
+                %>
+
+
             </div>
             <button
                 class="carousel-control-prev"
@@ -436,7 +420,7 @@
                             </p>
 
                         </div>
-                        <h4 class="text-danger my-2"><%= Math.round((p.getPrice() / 100) * (100-p.getDiscount().getDiscount_Amount()))%> đ</h4>
+                        <h4 class="text-danger my-2"><%= Math.round((p.getPrice() / 100) * (100 - p.getDiscount().getDiscount_Amount()))%> đ</h4>
                         <div data-tooltip="Giá:<%=p.getPrice()%>đ" class="button btn">
                             <a href="Product?productId=<%= p.getProductID()%>">
                                 <div class="button-wrapper ">
@@ -460,27 +444,17 @@
 
         <div id="clb" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img
-                        src="img/slide/slideshow_1.jpg"
-                        class="d-block w-100"
-                        alt="..."
-                        />
+                <%
+              
+for (int idx = 0; idx < slide4.size(); idx++) {
+    String slide = slide4.get(idx);
+                %>
+                <div class="carousel-item <%= (idx == 0) ? "active" : "" %>">
+                    <img src="img/slide/<%= slide %>" class="d-block w-100" alt="...">
                 </div>
-                <div class="carousel-item">
-                    <img
-                        src="img/slide/slideshow_2.jpg"
-                        class="d-block w-100"
-                        alt="..."
-                        />
-                </div>
-                <div class="carousel-item">
-                    <img
-                        src="img/slide/AoBongRo2_LE_auto_x2_colored.png"
-                        class="d-block w-100"
-                        alt="..."
-                        />
-                </div>
+                <%
+                    }
+                %>
             </div>
             <button
                 class="carousel-control-prev"

@@ -3,6 +3,7 @@
     Created on : May 30, 2024, 12:07:15 AM
     Author     : Hoàng Sơn
 --%>
+<%@page import="data.SettingContext"%>
 <%@page import="entity.SubCategory"%>
 <%@page import="Model.Category"%>
 <%@page import="data.CategoryContext"%>
@@ -104,6 +105,8 @@
             ArrayList<Category> listCateMale = cateDB.getCategorys("nam");
             ArrayList<Category> listCateFemale = cateDB.getCategorys("nu");
             ArrayList<Category> listCateAccessory = cateDB.getCategorys("phu_kien");
+            SettingContext settingDB = new SettingContext();
+            String logo = settingDB.getLogo("logoh");
         %>
     </head>
     <body>
@@ -113,6 +116,10 @@
                     <ul class="d-flex justify-content-end text-light list-unstyled mb-0">
                         <li class="mx-4">
                             <a href="introBrand" class="font-monospace text-decoration-none text-white">Giới Thiệu</a>
+                        </li>
+                        <span>&#124;</span>
+                        <li class="mx-4">
+                            <a href="productall" class="font-monospace text-decoration-none text-white">Tất Cả Sản Phẩm</a>
                         </li>
                         <span>&#124;</span>
                         <li class="mx-4">
@@ -129,7 +136,7 @@
                         <span>&#124;</span>
                         <li class="mx-4">
                             <c:if test="${sessionScope.CRRAccount == null}">
-                                <a class="font-monospace text-decoration-none text-white" href="view/Login.jsp">Đăng Nhập</a>
+                                <a class="font-monospace text-decoration-none text-white" href="Login">Đăng Nhập</a>
                             </c:if>
                             <c:if test="${sessionScope.CRRAccount != null}">
                                 <a href="view/ViewProfile.jsp" class="font-monospace text-decoration-none text-white">${sessionScope.CRRAccount.getFull_Name()}</a>
@@ -143,7 +150,7 @@
                 <div class="container-fluid row">
                     <div class="col-2 d-flex justify-content-end">
                         <a href="HomePage">
-                            <img src="img/logo/trang.png" alt="Home" width="180" height="150" />
+                            <img src="img/logo/<%=logo%>" alt="Home" width="180" height="150" />
                         </a>
                     </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -209,10 +216,14 @@
                             <li class="nav-item mx-5 dropdown py-3">
                                 <a class="text-decoration-none text-black" role="button" aria-expanded="false" data-bs-popper="static">PHỤ KIỆN</a>
                                 <ul class="dropdown-menu transition-5 fs-5">
-                                    <li><a class="dropdown-item" href="#">Tất</a></li>
-                                    <li><a class="dropdown-item" href="#">Balo</a></li>
-                                    <li><a class="dropdown-item" href="#">Vợt</a></li>
-                                    <li><a class="dropdown-item" href="#">Mũ</a></li>
+                                    <%
+                                        for (Category cate : listCateAccessory) {%>
+                                    <li><a class="dropdown-item" href="#"><%=cate.getCategory_Name()%></a></li>
+
+
+                                    <%  }%>
+
+
                                 </ul>
                             </li>
                         </ul>

@@ -5,193 +5,495 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login Page</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+            />
+        <title>Đăng Nhập</title>
+        <style>
+            html, body {
+                overflow-y: hidden;
+            }
+
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Poppins", sans-serif;
+                font-size: 14px;
+                color: #181818;
+                background: #181818;
+            }
+            section {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .login-modal {
+                position: absolute;
+                width: 100vw;
+                height: 100vh;
+                background: #f8f8f8;
+                display: flex;
+            }
+
+            .login-form {
+                height: 100%;
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+            }
+
+            .login-content {
+                width: 400px;
+                height: 450px;
+            }
+
+            .title {
+                font-weight: 500;
+                font-size: 44px;
+                line-height: 51px;
+                text-align: center;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+                color: #030303;
+            }
+
+            .subtitle {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 21px;
+                text-align: center;
+                letter-spacing: 0.03em;
+                color: #636364;
+            }
+
+            .email-input {
+                display: flex;
+                flex-direction: column;
+                margin-top: 37px;
+                margin-bottom: 21px;
+            }
+            .password-input {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 21px;
+            }
+
+            .input-title {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 21px;
+                letter-spacing: 0.03em;
+                color: #181818;
+                margin-bottom: 6px;
+            }
+
+            .input {
+                width: 400px;
+                height: 50px;
+                border: 1px solid rgba(0, 0, 0, 0.25);
+                filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+                border-radius: 12px;
+                background-color: transparent;
+                outline: none;
+                padding: 0px 20px;
+            }
+
+            .input:focus {
+                border: 1px solid black;
+            }
+            .input::placeholder {
+                font-weight: 300;
+                font-size: 14px;
+                line-height: 21px;
+                letter-spacing: 0.03em;
+                color: #636364;
+            }
+
+            /* Castomizing the checkbox */
+            .recovery {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 11px;
+            }
+            .remember {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            [type="checkbox"] {
+                opacity: 0;
+            }
+            [type="checkbox"] + label {
+                position: relative;
+                padding-left: 6px;
+                display: inline-block;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 18px;
+                letter-spacing: 0.03em;
+                color: #181818;
+                cursor: pointer;
+            }
+
+            [type="checkbox"] + label::before {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: -11px;
+                width: 14px;
+                height: 14px;
+                outline: 1px solid rgba(0, 0, 0, 0.25);
+                border-radius: 4px;
+                background: #f8f8f8;
+                cursor: pointer;
+            }
+
+            [type="checkbox"]:checked + label::before {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: -11px;
+                width: 14px;
+                height: 14px;
+                outline: 1px solid #000;
+                border-radius: 4px;
+                background: #f8f8f8;
+                cursor: pointer;
+            }
+
+            [type="checkbox"]:checked + label::after {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: -11px;
+                width: 14px;
+                height: 14px;
+                background-image: url(img/logo/icons8-check-96.png);
+                background-size: cover;
+                border-radius: 4px;
+                cursor: pointer;
+                transform: scale(1);
+                opacity: 1;
+                transition: all 0.3s ease;
+
+            }
+
+            [type="checkbox"]:not(:checked) + label::after {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: -11px;
+                width: 14px;
+                height: 14px;
+                background-image: url(img/logo/icons8-check-96.png);
+                background-size: cover;
+                border-radius: 4px;
+                cursor: pointer;
+                transform: scale(0);
+                opacity: 0;
+            }
+            /* castom checkbox */
+
+            .forgot a {
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 18px;
+                letter-spacing: 0.03em;
+                color: #181818;
+                text-decoration: none;
+            }
+            .login-image {
+                height: 100%;
+                width: 50%;
+            }
+
+            .btn {
+                font-family: "Poppins", sans-serif;
+                width: 100%;
+                height: 46px;
+                border-radius: 12px;
+                margin-bottom: 11px;
+                border: none;
+                cursor: pointer;
+            }
+            .btn-primary {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 21px;
+                text-align: center;
+                letter-spacing: 0.03em;
+                color: #ffffff;
+                background: #ea454c;
+                box-shadow: 0px 4px 10px rgba(233, 68, 75, 0.25);
+                transition: all 0.3s ease;
+                margin-top: 10px;
+            }
+
+            .btn-primary:hover {
+                box-shadow: 0px 5px 12px rgba(233, 68, 75, 0.5);
+                color: #181818;
+            }
+
+            .btn-secondary {
+                background-color: #f8f8f8;
+                border: 1px solid rgba(0, 0, 0, 0.25);
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+                border-radius: 12px;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 21px;
+                text-align: center;
+                letter-spacing: 0.03em;
+                color: #000000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all 0.8s ease;
+                margin-top: 10px;
+            }
+
+            .btn-secondary:hover {
+                border: 1px solid rgba(233, 68, 75, 0.5);
+                color: #ea454c;
+            }
+
+            .btn-secondary:hover img {
+                display: none;
+            }
+
+            .btn-secondary img {
+                padding: 0px 10px;
+            }
+
+            .login-footer {
+                margin-top: 26px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+                font-size: 10px;
+                line-height: 15px;
+                letter-spacing: 0.03em;
+                color: #595959;
+            }
+
+            .login-footer a {
+                text-decoration: none;
+                color: #ea454c;
+                padding-left: 3px;
+            }
+
+
+            .button {
+
+                display: block;
+                position: relative;
+                width: 56px;
+                height: 56px;
+                margin: 0;
+                overflow: hidden;
+                outline: none;
+                background-color: black;
+                cursor: pointer;
+                border: 0;
+                margin-right: 100px;
+                position: absolute;
+                left: 130px;
+                top: 100px;
+            }
+
+            .button:before,
+            .button:after {
+                content: "";
+                position: absolute;
+                border-radius: 50%;
+                inset: 7px;
+            }
+
+            .button:before {
+                border: 4px solid #f0eeef;
+                transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+                    transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
+            }
+
+            .button:after {
+                border: 4px solid #96daf0;
+                transform: scale(1.3);
+                transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                opacity: 0;
+            }
+
+            .button:hover:before,
+            .button:focus:before {
+                opacity: 0;
+                transform: scale(0.7);
+                transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+
+            .button:hover:after,
+            .button:focus:after {
+                opacity: 1;
+                transform: scale(1);
+                transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+                    transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
+            }
+
+            .button-box {
+                display: flex;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .button-elem {
+                display: block;
+                width: 20px;
+                height: 20px;
+                margin: 17px 18px 0 18px;
+                transform: rotate(180deg);
+                fill: #f0eeef;
+            }
+
+            .button:hover .button-box,
+            .button:focus .button-box {
+                transition: 0.4s;
+                transform: translateX(-56px);
+            }
+
+            .text-button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                font: inherit; /* Để font của nút giống với font của văn bản xung quanh */
+            }
+
+            .text-button:hover {
+                color: darkblue; /* Màu sắc khi di chuột qua */
+            }
+
+            .text-button:focus {
+                outline: none; /* Loại bỏ viền focus */
+            }
+        </style>
+
+
     </head>
-    <style>
-        .logo {
-            max-width: 40%;
-            height: auto;
-        }
-        .slogan {
-            text-align: center;
-            margin-top: 10px;
-            color: white;
-        }
-        body {
-            background: url('https://images.unsplash.com/photo-1563580853176-38535245e8b6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fGZvb3RiYWxsJTIwc3RhZGl1bSUyMGFyc2VuYWx8ZW58MHx8MHx8fDA%3D') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
-        .container {
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: white;
-        }
-        .form-control {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black;
-        }
-        .form-label1 {
-            color: black;
-        }
-    </style>
+
     <body>
-        <h3 style="text-align: center">WELCOME TO AESPORT!!!!</h3>
-        <div class="container mt-5 w-75">
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <img src="https://files.oaiusercontent.com/file-sY9HJFIZ3CtsazxwUPrE5dmh?se=2024-05-25T14%3A21%3A25Z&sp=r&sv=2023-11-03&sr=b&rscc=max-age%3D31536000%2C%20immutable&rscd=attachment%3B%20filename%3Dd7aa5c46-1724-47d3-9047-b45716e9e2af.webp&sig=eXEFS9k3AflvDYSNXvr%2BCFblpFHhpFPLl89bDiP8jHs%3D" alt="AESport Logo" class="logo">
-                    <div class="slogan">
-                        <h4>AESport</h4>
-                        <p>Nơi mua bán đồ thể thao hàng đầu tại Hòa Lạc</p>
+        <div class="login-modal">
+            <div class="login-form">
+
+                <a  href="HomePage" class="button">
+                    <div class="button-box">
+                        <span class="button-elem">
+                            <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"
+                                ></path>
+                            </svg>
+                        </span>
+                        <span class="button-elem">
+                            <svg viewBox="0 0 46 40">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"
+                                ></path>
+                            </svg>
+                        </span>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="tab-login" data-mdb-pill-init href="#pills-login" role="tab"
-                            aria-controls="pills-login" aria-selected="true">Login</a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                               <a class="nav-link active" data-toggle="modal" data-target="#registerModal" role="tab"
-                            aria-selected="true">Register</a>
-                            <!-- Modal -->
-                            <div class="modal fade" id="registerModal" tabindex="0" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content border rounded-5 p-3 bg-white shadow box-area">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="registerModalLabel">Register</h5>
-                                        </div>
-                                        <div class="modal-body ">
-                                            <!-- Name input -->
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label1" for="registerName">Full Name</label>
-                                                <input type="text" id="registerName" class="form-control" />
-                                            </div>
+                </a>
 
-                                            <!-- Username input -->
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label1" for="registerUsername">Username</label>
-                                                <input type="text" id="registerUsername" class="form-control" />
-                                            </div>
-
-                                            <!-- Password input -->
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label1" for="registerEmail">Password</label>
-                                                <input type="password" id="registerPass" class="form-control" />
-                                            </div>
-
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label1" for="registerEmail">Confirm password</label>
-                                                <input type="password" id="registercfPass" class="form-control" />
-                                            </div>
-
-                                            <!-- Email input -->
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label1" for="registerEmail">Email</label>
-                                                <input type="email" id="registerEmail" class="form-control" />
-                                            </div>
-
-                                            <!-- Phone Number input -->
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label1" for="registerPassword">Phone Number</label>
-                                                <input type="text" id="registerPhone" class="form-control" />
-                                            </div>
-
-                                            <!-- Address input -->
-                                            <div data-mdb-input-init class="form-outline mb-4">
-                                                <label class="form-label1" for="registerRepeatPassword">Address</label>
-                                                <input type="text" id="registerAddress" class="form-control" />
-                                            </div>
-                                            <div class="row mb-3 fade bg-danger" id="registerMessageBox">
-                                                <div class="col-sm-12 text-secondary">
-                                                    <p class="text-white text-center" id="registerMessage"></p>
-                                                </div>
-                                            </div>
-                                            <div class="input-group mb-3">
-                                                <button class="btn btn-lg btn-primary w-100 fs-6" onclick="register()">Sign Up</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- Pills navs -->
-
-                    <!-- Pills content -->
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                            <form>
-                                <p id="mess" class="bg-danger text-center fade"></p>
-
-                                <!-- Email input -->
-                                <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="email" id="UserName" class="form-control" />
-                                    <label class="form-label" for="loginName">Username</label>
-                                </div>
-
-                                <!-- Password input -->
-                                <div data-mdb-input-init class="form-outline mb-4">
-                                    <input type="password" id="Password" class="form-control" />
-                                    <label class="form-label" for="loginPassword">Password</label>
-                                </div>
-
-                                <!-- 2 column grid layout -->
-                                <div class="row mb-4">
-                                    <div class="col-md-6 d-flex justify-content-center">
-                                        <!-- Checkbox -->
-                                        <div class="form-check mb-3 mb-md-0">
-                                            <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
-                                            <label class="form-check-label" for="loginCheck"> Remember me </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 d-flex justify-content-center">
-                                        <!-- Simple link --><small>
-                                            <a href="#" data-toggle="modal" data-target="#forgotModal">Forgot Password?</a>
-                                        </small>
-                                        <div class="modal fade mt-5 pt-5" id="forgotModal" tabindex="0" role="dialog" aria-labelledby="forgotModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content border rounded-5 p-3 bg-white shadow box-area">
-                                                    <div class="modal-body " >
-                                                        <div class="input-group mb-3">
-                                                            <input type="email" id="resetEmail" class="form-control form-control-lg bg-light fs-6" placeholder="Your Email">
-                                                        </div>
-                                                        <div class="row mb-3 fade bg-danger" id="resetMessageBox">
-                                                            <div class="col-sm-12 text-secondary">
-                                                                <p class="text-white text-center" id="resetMessage"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="input-group mb-3">
-                                                            <button type="button" class="btn btn-lg btn-primary w-100 fs-6" onclick="sendRequest()">Send</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="MessageLogin" class="mt-3 text-danger"></div>
-                                <!-- Submit button -->
-                                <button id="BtnLogin" type="button" onclick="Login()" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>
-                            </form>
+                <div class="login-content">
+                    <form id="loginForm" action="/SWP/Login" method="post">
+                        <h1 class="title">AE SPORT</h1>
+                        <h3 class="subtitle">Chào mừng trở lại! Vui lòng đăng nhập.</h3>
+                        <div class="email-input">
+                            <span class="input-title">Tài khoản</span>
+                            <input class="input" id="username" type="text" placeholder="Tài khoản" name="username" required/>
                         </div>
+                        <div class="password-input">
+                            <span class="input-title">Mật Khẩu</span>
+                            <input class="input" id="password" type="password" name="password" placeholder="********" required/>
+                        </div>
+                        <div class="recovery">
+                            <div class="remember">
+                                <input type="checkbox" id="check" />
+                                <label for="check">Nhớ mật khẩu</label>
+                            </div>
+                            <div class="forgot">
+                                <button type="button" class="text-button" id="forgotPasswordButton">Quên mật khẩu</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit" name="action" value="login">Đăng nhập</button>
+                    </form>
+
+                    <button class="btn btn-secondary">
+                        <img src="img/logo/icon-google.png" alt="Băng nhập bằng Google" />Băng nhập bằng Google
+                    </button>
+                    <div class="login-footer">
+                        Bạn chưa có tài khoản?<a href="Register">Đăng ký!</a>
                     </div>
-                    <!-- Pills content -->
                 </div>
             </div>
+            <div class="login-image">
+
+                <img
+                    src="img/logo/nike.jpg"
+                    alt="Nike Shoes"
+                    height="100%"
+                    width="100%"
+                    />
+            </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="../Asset/js/Login.js"></script>
+
+
+        <c:if test="${not empty requestScope.message}">
+            <script>
+                // Thiết lập biến JavaScript từ giá trị JSTL
+                var message = "${requestScope.message}";
+
+                // Hàm hiển thị thông báo
+                function showAlert() {
+                    alert(message);
+                }
+                window.onload = function () {
+                    showAlert()
+                    event.preventDefault();
+                };
+            </script>
+        </c:if>
+
+        <script>
+            document.getElementById('forgotPasswordButton').addEventListener('click', function () {
+                var form = document.getElementById('loginForm');
+                form.action = 'Login'; // Cập nhật URL hành động cho quên mật khẩu
+                form.submit(); // Gửi biểu mẫu với hành động mới
+            });
+        </script>
+
     </body>
 </html>

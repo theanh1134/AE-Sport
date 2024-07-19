@@ -4,7 +4,7 @@
         <servlet-name>ManageSaleProductHomePage</servlet-name>
         <servlet-class>controllerr.ManageSaleProductHomePage</servlet-class>
     </servlet>
-       <servlet>
+    <servlet>
         <servlet-name>HomePage</servlet-name>
         <servlet-class>controllerr.HomePage</servlet-class>
     </servlet>
@@ -167,6 +167,42 @@
     <servlet>
         <servlet-name>ReportController</servlet-name>
         <servlet-class>controllerr.ReportController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagerDiscount</servlet-name>
+        <servlet-class>admin.ManagerDiscount</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Setting</servlet-name>
+        <servlet-class>controllerr.Setting</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductController</servlet-name>
+        <servlet-class>controllerr.ProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductbyCategory</servlet-name>
+        <servlet-class>controllerr.ProductbyCategory</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchProduct</servlet-name>
+        <servlet-class>controllerr.SearchProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Feedback1</servlet-name>
+        <servlet-class>controllerr.Feedback1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>oderview</servlet-name>
+        <servlet-class>oderview</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewProductBybutton</servlet-name>
+        <servlet-class>controllerr.ViewProductBybutton</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>controllerr.Register</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomePage</servlet-name>
@@ -335,6 +371,42 @@
     <servlet-mapping>
         <servlet-name>ReportController</servlet-name>
         <url-pattern>/report</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagerDiscount</servlet-name>
+        <url-pattern>/managerdiscount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Setting</servlet-name>
+        <url-pattern>/Setting</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductController</servlet-name>
+        <url-pattern>/productall</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductbyCategory</servlet-name>
+        <url-pattern>/subcategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchProduct</servlet-name>
+        <url-pattern>/searchprd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Feedback1</servlet-name>
+        <url-pattern>/feedback1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>oderview</servlet-name>
+        <url-pattern>/oderview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewProductBybutton</servlet-name>
+        <url-pattern>/productList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/Register</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

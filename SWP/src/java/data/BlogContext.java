@@ -13,12 +13,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.time.ZoneId;
 
 /**
  *
@@ -399,11 +397,11 @@ public class BlogContext extends DBContext {
         }
         return list;
     }
-
+    
     public void updateStatusBlog(int Blog_ID, String status, String type) {
         LocalDateTime now = LocalDateTime.now();
         Timestamp sqlTimestamp = Timestamp.valueOf(now);
-        System.out.println(sqlTimestamp);
+       
         try {
             String sql_update = "UPDATE [dbo].[Status_Blog]\n"
                     + "   SET \n"

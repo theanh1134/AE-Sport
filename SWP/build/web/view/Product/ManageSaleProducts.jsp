@@ -527,7 +527,14 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <input type="number" value="0" name="discount"/>   
+
+                                                            <select  name="discount" required>
+                                                  
+                                                                <c:forEach  items="${requestScope.listDiscount}" var="dis">
+                                                                    <option  value="${dis.getDiscount_ID()}">${dis.getDiscount_Name()} (${dis.getDiscount_Amount()}%)</option>
+                                                                </c:forEach>
+                                                            </select>
+
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>

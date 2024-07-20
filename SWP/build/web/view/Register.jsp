@@ -48,14 +48,13 @@
             height: 100%;
             width: 50%;
             display: flex;
-
             justify-content: center;
             align-items: center;
 
         }
 
         .login-content {
-            margin-top: 270px;
+            margin-top: 150px;
             width: 400px;
             height: 100vh;
         }
@@ -68,6 +67,7 @@
             letter-spacing: 0.03em;
             text-transform: uppercase;
             color: #030303;
+            margin-bottom: 1rem;
         }
 
         .subtitle {
@@ -82,15 +82,13 @@
         .username-input {
             display: flex;
             flex-direction: column;
-            margin-top: 37px;
-            margin-bottom: 21px;
+            margin-bottom: 5px;
         }
         .password-input {
             display: flex;
             flex-direction: column;
             margin-bottom: 21px;
         }
-
         .input-title {
             font-weight: 500;
             font-size: 14px;
@@ -101,8 +99,8 @@
         }
 
         .input {
-
-            width: 400px;
+            width: 100%;
+            max-width: 400px;
             height: 50px;
             border: 1px solid rgba(0, 0, 0, 0.25);
             filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
@@ -111,6 +109,7 @@
             outline: none;
             padding: 0px 20px;
         }
+
 
         .input:focus {
             border: 1px solid black;
@@ -300,7 +299,6 @@
 
 
         .button {
-
             display: block;
             position: relative;
             width: 56px;
@@ -313,8 +311,8 @@
             border: 0;
             margin-right: 100px;
             position: absolute;
-            right:  860px;
-            top: 100px;
+            right:  680px;
+            top: 80px;
         }
 
         .button:before,
@@ -428,7 +426,7 @@
                 </a>
 
                 <div class="login-content">
-                    <form action="/SWP/Login" method="post"">
+                    <form action="Login" method="post"">
                         <h1 class="title">ĐĂNG KÝ</h1>
                         <div class="username-input">
                             <span class="input-title">Tài khoản</span>
@@ -477,40 +475,38 @@
 
 
         <script>
-            document.getElementById('togglePassword1').addEventListener('click', function() {
-            var passwordField = document.getElementById('password');
-            var type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️' : '🙈'; // Thay đổi biểu tượng
+            document.getElementById('togglePassword1').addEventListener('click', function () {
+                var passwordField = document.getElementById('password');
+                var type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🙈'; // Thay đổi biểu tượng
             });
-            document.getElementById('togglePassword2').addEventListener('click', function() {
-            var confirmPasswordField = document.getElementById('confirm-password');
-            var type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPasswordField.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️' : '🙈'; // Thay đổi biểu tượng
+            document.getElementById('togglePassword2').addEventListener('click', function () {
+                var confirmPasswordField = document.getElementById('confirm-password');
+                var type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordField.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🙈'; // Thay đổi biểu tượng
             });
+
         </script>
-
-
-
-
         <c:if test="${not empty requestScope.message}">
             <script>
                 // Thiết lập biến JavaScript từ giá trị JSTL
                 var message = "${requestScope.message}";
                 // Hàm hiển thị thông báo
                 function showAlert() {
-                alert(message);
+                    alert(message);
                 }
                 window.onload = function () {
-                showAlert()
-                        event.preventDefault();
+                    showAlert()
+                    event.preventDefault();
                 };
-                });
             </script>
         </c:if>
-        <script>
 
-        </script>
+
+
+
+
     </body>
 </html>

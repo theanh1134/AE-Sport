@@ -28,6 +28,7 @@ public class ManageSaleProductHomePage extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductContext p = new ProductContext();
         CategoryContext b = new CategoryContext();
+
         ArrayList<product> productsSaleHomePage = p.getProductsonHomePage("sale");
         req.setAttribute("productsSaleHomePage", productsSaleHomePage);
         String select1 = req.getParameter("select1");
@@ -71,7 +72,7 @@ public class ManageSaleProductHomePage extends HttpServlet {
             int idRole = db.getRoleIDbyRoleName(role);
             ArrayList<String> fetures = db.getFeature(idRole);
 
-            if (fetures.contains(servletPath)) {
+            if (fetures.contains(servletPath) || "admin".equals(role)) {
                 String type = req.getParameter("type");
                 String select1 = req.getParameter("select1");
                 String productID = req.getParameter("productID");

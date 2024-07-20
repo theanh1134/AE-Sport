@@ -260,21 +260,11 @@
 
                 </div>
 
-
-
-
-
-
             </div>
         </div>
     </div>
 
 
-    <div class="container mt-5 ">
-        <h2>Logo</h2>
-        <input type="file"/>
-    </div>
-</div>
-</div>
+
 </body>
 </html>

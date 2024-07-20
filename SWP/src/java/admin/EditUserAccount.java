@@ -81,7 +81,7 @@ public class EditUserAccount extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         AdminDAO dao = new AdminDAO();
         int userId = Integer.parseInt(request.getParameter("uid"));
@@ -108,18 +108,18 @@ public class EditUserAccount extends HttpServlet {
             request.setAttribute("error2", "Email: (" + email + ") đã tồn tại!");
         }
         if (error.equals("")) {
-            if(img1.trim().isEmpty()){
+            if (img1.trim().isEmpty()) {
                 img = img2;
             }
-            UserAccount userTemp = new UserAccount(userId, password, userName, fullName, email, phone, img); 
+            UserAccount userTemp = new UserAccount(userId, password, userName, fullName, email, phone, img);
             dao.updateUserAccount(userTemp);
-            
+
             //update address
             if (addresses != null) {
                 ArrayList<Address> adrList = dao.getAddressByUserID(userId);
                 for (int i = 0; i < addresses.length; i++) {
                     Address elem = new Address(adrList.get(i).getAddressId(), addresses[i], userId);
-                    
+
                     dao.updateAddress(elem);
                 }
             }

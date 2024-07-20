@@ -37,6 +37,7 @@
         <%
             BlogContext blogDB = new BlogContext();
             ArrayList<entity.Blog> listBlog = blogDB.getBlogs();
+                            System.out.println(listBlog);
             Blog mainBlog = blogDB.getMainBlog();
             ArrayList<CategoryBlog> listCate = blogDB.getCategorysBlog();
         %>

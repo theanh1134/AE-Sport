@@ -15,6 +15,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +48,7 @@ public class LoginController extends HttpServlet {
                 }
 
                 if (AuthorizationDB.getRole(U.getUse_ID()).contains("nhan_vien")) {
-   
+
                     response.sendRedirect("HomeStaff");
                 }
             } else {
@@ -72,12 +76,20 @@ public class LoginController extends HttpServlet {
         String message = "";
         if (!password.equals(confirm_password)) {
             message = "Mật khẩu không khớp!";
-
         } else if (ADAO.GetAccountByEmail(userEmail) > 0) {
             message = "Email đã tồn tại, ";
         } else if (ADAO.validateUserName(userName)) {
             message = "tên đăng nhập  đã tồn tại";
         } else {
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String formattedDate = currentDate.format(formatter);
+
+            // Parse the date
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date utilDate = sdf.parse(formattedDate);
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
             UserAccount uA = new UserAccount();
             uA.setUserName(userName);
             uA.setAddress(address);
@@ -85,7 +97,8 @@ public class LoginController extends HttpServlet {
             uA.setEmail(userEmail);
             uA.setPhone_number(userPhone);
             uA.setPassword(confirm_password);
-            // trả về id account mới vừa được insert nếu thành công
+            uA.setDateCreate(sqlDate);
+
             int newIdInsert = ADAO.insertUserAccount(uA);
             if (newIdInsert > 0) {
                 message = "Vui lòng xác nhận email! và đăng nhập lại";
@@ -93,9 +106,10 @@ public class LoginController extends HttpServlet {
                 adminDao.insertUserRole(newIdInsert, 6);
                 request.setAttribute("message", message);
                 request.getRequestDispatcher("view/Login.jsp").forward(request, response);
-                return;
+
             }
         }
+        System.out.println(message);
         request.setAttribute("message", message);
         request.getRequestDispatcher("view/Register.jsp").forward(request, response);
     }

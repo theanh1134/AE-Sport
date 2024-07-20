@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * @author Hoàng Sơn
  */
 public class BlogContext extends DBContext {
-
+    
     public void updateNumber_of_views(int id) {
         int numberViewer = 0;
         try {
@@ -37,18 +37,18 @@ public class BlogContext extends DBContext {
 
             // Tăng số lượt xem lên 1 đơn vị
             numberViewer++;
-
+            
             String sqlIncrease = "UPDATE [dbo].[Blog] SET [number_of_views] = ? WHERE blog_ID=?";
             PreparedStatement stmIncrease = connection.prepareStatement(sqlIncrease);
             stmIncrease.setInt(1, numberViewer);
             stmIncrease.setInt(2, id);
             stmIncrease.executeUpdate();
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public ArrayList<Blog> getBlogs() {
         ArrayList<Blog> list = new ArrayList<>();
         try {
@@ -79,13 +79,13 @@ public class BlogContext extends DBContext {
                 b.setCa(ca);
                 list.add(b);
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-
+    
     public ArrayList<Blog> getBlogsPaging(int index) {
         ArrayList<Blog> list = new ArrayList<>();
         try {
@@ -112,46 +112,42 @@ public class BlogContext extends DBContext {
                 b.setNumber_of_views(rs.getInt("number_of_views"));
                 list.add(b);
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-
+    
     public Blog getBlog(int blogID) {
         Blog b = new Blog();
         try {
-
-            String sql = "SELECT [blog_ID]\n"
-                    + "      ,[Title]\n"
-                    + "      ,[img]\n"
-                    + "      ,[date]\n"
-                    + "      ,[detail]\n"
+            
+            String sql = "SELECT *\n"
                     + "  FROM [dbo].[Blog]\n"
                     + "  where blog_ID=?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, blogID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-
+                
                 b.setBlog_ID(rs.getInt("blog_ID"));
                 b.setDetail(rs.getString("detail"));
                 b.setDate(rs.getDate("date"));
                 b.setTitle(rs.getString("Title"));
                 b.setImg(rs.getString("img"));
-
+                b.setAuthorString(rs.getString("author"));
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return b;
-
+        
     }
-
-    public void insertBlog(String title, String img, String detail, int category_Id) {
-
+    
+    public void insertBlog(String title, String img, String detail, int category_Id,String author) {
+        
         try {
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -177,29 +173,29 @@ public class BlogContext extends DBContext {
             stm.setString(4, detail);
             stm.setInt(5, 0); // Example stype value
             stm.setInt(6, category_Id);
-            stm.setString(7, "sonvh");
+            stm.setString(7, author);
 
             // Execute the insert
             stm.executeUpdate();
-
+            
             int index = getLastIDBlog();
-
+            
             String sqlStatusBlog = "INSERT INTO [dbo].[Status_Blog] "
                     + "([blog_ID], [status] ,[type]) "
                     + "VALUES (?, 'pending', 'add')";
-
+            
             PreparedStatement stm2 = connection.prepareStatement(sqlStatusBlog);
             stm2.setInt(1, index);
-
+            
             stm2.executeUpdate();
-
+            
         } catch (SQLException | ParseException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
-
+            
         }
-
+        
     }
-
+    
     public int getLastIDBlog() {
         int index = 0;
         try {
@@ -216,9 +212,9 @@ public class BlogContext extends DBContext {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return index;
-
+        
     }
-
+    
     public Blog getMainBlog() {
         Blog bl = new Blog();
         try {
@@ -231,10 +227,10 @@ public class BlogContext extends DBContext {
                     + "  FROM [dbo].[Blog]\n"
                     + "  where stype= 1";
             PreparedStatement stm = connection.prepareStatement(sql);
-
+            
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-
+                
                 bl.setBlog_ID(rs.getInt("blog_ID"));
                 bl.setDetail(rs.getString("detail"));
                 bl.setDate(rs.getDate("date"));
@@ -242,44 +238,44 @@ public class BlogContext extends DBContext {
                 bl.setImg(rs.getString("img"));
                 bl.setStype(rs.getInt("stype"));
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-
+            
         }
         return bl;
-
+        
     }
-
+    
     public void updateMainBlog(int blogID_update) {
-
+        
         try {
             Blog mainBlog = getMainBlog();
-
+            
             String sql_dele = "UPDATE [dbo].[Blog]"
                     + "SET [stype]=0"
                     + "WHERE blog_ID=?";
             PreparedStatement stm_dele = connection.prepareStatement(sql_dele);
             stm_dele.setInt(1, mainBlog.getBlog_ID());
             stm_dele.executeUpdate();
-
+            
             String sql_update = "UPDATE [dbo].[Blog]"
                     + "SET [stype]=1"
                     + "WHERE blog_ID=?";
             PreparedStatement stm_update = connection.prepareStatement(sql_update);
             stm_update.setInt(1, blogID_update);
             stm_update.executeUpdate();
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
-
+            
         }
-
+        
     }
-
+    
     public void updateBlog(int Blog_ID, String title, String img, String detail, int caID) {
-
+        
         try {
             String sql_update = "UPDATE [dbo].[Blog] \n"
                     + "   SET [Title] = ?\n"
@@ -288,7 +284,7 @@ public class BlogContext extends DBContext {
                     + ",        [category_Id]=?"
                     + "    \n"
                     + " WHERE blog_ID=?";
-
+            
             PreparedStatement stm_update = connection.prepareStatement(sql_update);
             stm_update.setString(1, title);
             stm_update.setString(2, img);
@@ -296,14 +292,14 @@ public class BlogContext extends DBContext {
             stm_update.setInt(4, caID);
             stm_update.setInt(5, Blog_ID);
             stm_update.executeUpdate();
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
-
+            
         }
-
+        
     }
-
+    
     public ArrayList<CategoryBlog> getCategorysBlog() {
         ArrayList<CategoryBlog> list = new ArrayList<>();
         try {
@@ -314,19 +310,19 @@ public class BlogContext extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 CategoryBlog b = new CategoryBlog();
-
+                
                 b.setId(rs.getInt("category_Id"));
                 b.setName(rs.getString("category_Name"));
                 list.add(b);
-
+                
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-
+    
     public ArrayList<Blog> getBlogsByCategory(int category_id) {
         ArrayList<Blog> list = new ArrayList<>();
         try {
@@ -351,13 +347,13 @@ public class BlogContext extends DBContext {
                 b.setCa(ca);
                 list.add(b);
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-
+    
     public ArrayList<Blog> getRequestBlog(String type, String status) {
         ArrayList<Blog> list = new ArrayList<>();
         try {
@@ -373,7 +369,7 @@ public class BlogContext extends DBContext {
                     + "                  			 and sb.type=?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, status);
-
+            
             stm.setString(2, type);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -391,7 +387,7 @@ public class BlogContext extends DBContext {
                 b.setNumber_of_views(rs.getInt("number_of_views"));
                 list.add(b);
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -401,7 +397,7 @@ public class BlogContext extends DBContext {
     public void updateStatusBlog(int Blog_ID, String status, String type) {
         LocalDateTime now = LocalDateTime.now();
         Timestamp sqlTimestamp = Timestamp.valueOf(now);
-       
+        
         try {
             String sql_update = "UPDATE [dbo].[Status_Blog]\n"
                     + "   SET \n"
@@ -409,21 +405,21 @@ public class BlogContext extends DBContext {
                     + "      ,[type] = ?\n"
                     + ",[time]=?"
                     + " WHERE blog_ID=?";
-
+            
             PreparedStatement stm_update = connection.prepareStatement(sql_update);
             stm_update.setString(1, status);
             stm_update.setString(2, type);
             stm_update.setTimestamp(3, sqlTimestamp);
             stm_update.setInt(4, Blog_ID);
             stm_update.executeUpdate();
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
-
+            
         }
-
+        
     }
-
+    
     public int getNumberRequest(String type) {
         int number = 0;
         try {
@@ -441,7 +437,7 @@ public class BlogContext extends DBContext {
         }
         return number;
     }
-
+    
     public ArrayList<Blog> getHistoryRequestBlog(String type, String status) {
         ArrayList<Blog> list = new ArrayList<>();
         try {
@@ -466,12 +462,12 @@ public class BlogContext extends DBContext {
                 ca.setId(rs.getInt("category_Id"));
                 ca.setName(rs.getString("category_Name"));
                 b.setCa(ca);
-
+                
                 sb.setStatus(rs.getString("status"));
-
+                
                 Timestamp sqlTimestamp = rs.getTimestamp("time");
                 sb.setTime(sqlTimestamp);
-
+                
                 sb.setType(rs.getString("type"));
                 b.setStatusBlog(sb);
                 b.setBlog_ID(rs.getInt("blog_ID"));
@@ -483,11 +479,11 @@ public class BlogContext extends DBContext {
                 b.setNumber_of_views(rs.getInt("number_of_views"));
                 list.add(b);
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BlogContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-
+    
 }

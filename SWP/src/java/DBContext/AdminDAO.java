@@ -514,7 +514,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 màu by color_ID
-    public void deleteColorByID(int colorID) {
+    public void deleteColorByID(int colorID) throws Exception {
 
         try {
             String sql = "delete from [Color] where [color_id] = ?";
@@ -522,7 +522,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, colorID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
@@ -605,7 +605,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 Size by size_ID
-    public void deleteSizeByID(int sizeID) {
+    public void deleteSizeByID(int sizeID) throws Exception {
 
         try {
             String sql = "delete from [Size] where [size_ID] = ?";
@@ -613,7 +613,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, sizeID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
@@ -672,7 +672,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 thương hiệu by Brand_ID
-    public void deleteBrandByID(int brandID) {
+    public void deleteBrandByID(int brandID) throws Exception {
 
         try {
             String sql = "delete from [Brand] where [Brand_ID] = ?";
@@ -680,7 +680,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, brandID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
@@ -898,7 +898,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 môn thể thao by sport_ID
-    public void deleteSportByID(int sportID) {
+    public void deleteSportByID(int sportID) throws Exception {
 
         try {
             String sql = "delete from [Sport] where [Sport_ID] = ?";
@@ -906,7 +906,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, sportID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
@@ -1027,7 +1027,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 thể loại by [category_ID]
-    public void deleteCategoryByID(int categoryID) {
+    public void deleteCategoryByID(int categoryID) throws Exception {
 
         try {
             String sql = "delete from [Category] where [category_ID] = ?";
@@ -1035,7 +1035,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, categoryID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
@@ -1136,7 +1136,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 thể loại nhỏ by [subcategoryID]
-    public void deleteSubCategoryByID(int subcategoryID) {
+    public void deleteSubCategoryByID(int subcategoryID) throws Exception {
 
         try {
             String sql = "delete from [Subcategory] where [Subcategory_ID] = ?";
@@ -1144,7 +1144,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, subcategoryID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
@@ -1295,7 +1295,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 feature by fe_ID
-    public void deleteFeatureByID(int feID) {
+    public void deleteFeatureByID(int feID) throws Exception {
 
         try {
             String sql = "delete from [Feature] where [fu_ID] = ?";
@@ -1303,7 +1303,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, feID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 
@@ -1797,7 +1797,7 @@ public class AdminDAO extends DBContext {
     }
 
     // xóa 1 Role by RoleID
-    public void deleteRoleByID(int roleID) {
+    public void deleteRoleByID(int roleID) throws Exception {
 
         try {
             deleteUserRole(roleID);
@@ -1806,7 +1806,7 @@ public class AdminDAO extends DBContext {
             st.setInt(1, roleID);
             st.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e);
+            throw e;
         }
     }
 

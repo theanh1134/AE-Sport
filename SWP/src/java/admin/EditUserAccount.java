@@ -124,9 +124,9 @@ public class EditUserAccount extends HttpServlet {
                 }
             }
             if (dao.getUserRoleByUserID(userId) != null) {
-                response.sendRedirect(request.getContextPath() + "/manageremployeeaccount");
+                response.sendRedirect(request.getContextPath() + "/manageremployeeaccount?edit="+userId);
             } else {
-                response.sendRedirect(request.getContextPath() + "/manageruseraccount");
+                response.sendRedirect(request.getContextPath() + "/manageruseraccount?edit="+userId);
             }
         } else {
             user = dao.getUserAccountByUserID(userId);

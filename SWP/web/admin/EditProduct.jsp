@@ -108,7 +108,7 @@
                             if (product != null) {
                     %>
 
-                    <h1 style="text-align: center; font-family: initial; font-weight: bold">Chỉnh sửa sản phẩm</h1>
+                    <h1 style="text-align: center; font-family: initial; font-weight: bold">Chỉnh sửa sản phẩm ID:<%=productID%></h1>
 
                     <div class="row">
                         <div class="col-6" >

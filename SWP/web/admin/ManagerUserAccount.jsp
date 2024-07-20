@@ -63,9 +63,25 @@
             <div class="col-10" style="background: #e2e7e8">
                 <jsp:include page="HeaderAdmin.jsp"/>
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px">
-                    <h1 style="font-family: initial">Danh sách tài khoản <span style="color: blue">người dùng</span></h1>
-
+                    <h1 style="font-family: initial; b">Danh sách tài khoản <span style="color: blue">người dùng</span></h1>
+                    <hr style="size: 30px"/>
                     <%
+                        String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
+                        if (error != null) {
+                    %>
+                    <div id="errorAlert" class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
+                        }
+                        if (info != null) {
+                    %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
+                    <%
+                        }
                         ArrayList<UserAccount> list = (ArrayList<UserAccount>) request.getAttribute("list");
                         if (list == null || list.size() == 0) {
                     %>
@@ -75,9 +91,9 @@
                             <input type="text" name="fullname" placeholder="Tìm kiếm theo tên" value="${param.fullname}" class="search-input">
                             <input type="submit" value="Search" class="search-button">
                         </form>
-                    <button style="background: #343a40;color: white; height: 43px; border-radius: 4px " onclick="location.href = '${pageContext.request.contextPath}/adduseraccount'">Add UserAccount</button>
+                        <button style="background: #343a40;color: white; height: 43px; border-radius: 4px " onclick="location.href = '${pageContext.request.contextPath}/adduseraccount'">Add UserAccount</button>
                     </div>
-                    
+
                     <%
                     } else {
                     %>
@@ -149,6 +165,25 @@
                 }
                 checkbox.closest('form').submit();
             }
+
+            window.onload = function () {
+                var errorAlert = document.getElementById('errorAlert');
+                var infoAlert = document.getElementById('infoAlert');
+
+                if (errorAlert) {
+                    setTimeout(function () {
+                        errorAlert.style.display = 'none';
+                    }, 5000);
+                }
+
+                if (infoAlert) {
+                    setTimeout(function () {
+                        infoAlert.style.display = 'none';
+                    }, 5000);
+                }
+            };
+
+
         </script>
     </body>
 </html>

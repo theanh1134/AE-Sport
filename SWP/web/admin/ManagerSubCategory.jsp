@@ -30,7 +30,7 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
             />
-        
+
         <style>
             table {
                 border-collapse: collapse;
@@ -68,18 +68,25 @@
                 <jsp:include page="HeaderAdmin.jsp"/>
 
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px" >
-                    <h1 style="padding: 10px">Danh sách thể loại</h1>
+                    <h1 style="font-family: initial;">Danh sách thể loại</h1>
+                    <hr style="size: 30px"/>
                     <%
                         String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
                         if (error != null) {
                     %>
                     <div id="errorAlert" class="alert alert-danger" role="alert">
-                        <%= error%>
+                        <%= error %>
                     </div>
                     <%
                         }
+                        if (info != null) {
                     %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
                     <%
+                        }
                         AdminDAO dao = new AdminDAO();
                         ArrayList<SubCategory> list = (ArrayList<SubCategory>) request.getAttribute("list");
                         ArrayList<Integer> listCategory = (ArrayList<Integer>) request.getAttribute("listCategory");
@@ -130,7 +137,7 @@
                             <td><%= dao.getCategoryByID(c.getCategory_ID())%></td>
 
                             <td>
-                                <a href="managersubcategory?subcategoryID=<%= c.getSubcategory_ID()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                                <a href="managersubcategory?delete=<%= c.getSubcategory_ID()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
 
                             </td>
                         </tr>
@@ -160,7 +167,7 @@
                                 <label for="subcategoryName" class="form-label">SubCategory Name</label>
                                 <input type="text" class="form-control" id="sportName" name="subcategoryname" required>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="Type" class="form-label">Category Type</label>
                                 <select class="form-control" id="categoryID" name="categoryID" required>
@@ -187,10 +194,18 @@
 
             window.onload = function () {
                 var errorAlert = document.getElementById('errorAlert');
+                var infoAlert = document.getElementById('infoAlert');
+
                 if (errorAlert) {
                     setTimeout(function () {
                         errorAlert.style.display = 'none';
-                    }, 3000);
+                    }, 5000);
+                }
+
+                if (infoAlert) {
+                    setTimeout(function () {
+                        infoAlert.style.display = 'none';
+                    }, 5000);
                 }
             };
         </script>

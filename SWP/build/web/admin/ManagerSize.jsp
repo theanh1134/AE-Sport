@@ -65,8 +65,26 @@
                 <jsp:include page="HeaderAdmin.jsp"/>
 
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px" >
-                    <h1 style="padding: 10px">Danh sách Size</h1>
+                    <h1 style="font-family: initial;">Danh sách kích cỡ</h1>
+                    <hr style="size: 30px"/>
                     <%
+                        String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
+                        if (error != null) {
+                    %>
+                    <div id="errorAlert" class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
+                        }
+                        if (info != null) {
+                    %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
+                    <%
+                        }
+
                         ArrayList<Size> list = (ArrayList<Size>) request.getAttribute("list");
                         if (list == null || list.size() == 0) {
                     %>
@@ -81,7 +99,6 @@
                             </select>
                             <input type="submit" value="Thêm" class="search-button">
                         </div>
-                        <div><h5 style="color: red; padding: 5px">${error}</h5></div>
                     </form>
 
 
@@ -99,7 +116,6 @@
                                 </select>
                                 <input type="submit" value="Thêm" class="search-button">
                             </form>
-                            <h5 style="color: red; padding: 5px; font-size: 13px">${error}</h5>
                         </div>
 
                     </div>
@@ -120,7 +136,7 @@
                             <td><%= s.getSize_Name() %></td>
 
                             <td>
-                                <a href="managersize?sizeID=<%= s.getSize_ID() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                                <a href="managersize?delete=<%= s.getSize_ID() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
 
                             </td>
                         </tr>
@@ -134,5 +150,26 @@
                     %>
                 </div>
             </div>
+            <script>
+
+                window.onload = function () {
+                    var errorAlert = document.getElementById('errorAlert');
+                    var infoAlert = document.getElementById('infoAlert');
+
+                    if (errorAlert) {
+                        setTimeout(function () {
+                            errorAlert.style.display = 'none';
+                        }, 5000);
+                    }
+
+                    if (infoAlert) {
+                        setTimeout(function () {
+                            infoAlert.style.display = 'none';
+                        }, 5000);
+                    }
+                };
+
+
+            </script>
     </body>
 </html>

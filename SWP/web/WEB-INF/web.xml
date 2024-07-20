@@ -57,14 +57,6 @@
         <servlet-class>admin.ManagerRole</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DeleteRole</servlet-name>
-        <servlet-class>admin.DeleteRole</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteFeature</servlet-name>
-        <servlet-class>admin.DeleteFeature</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UpdateRole</servlet-name>
         <servlet-class>admin.UpdateRole</servlet-class>
     </servlet>
@@ -115,6 +107,10 @@
     <servlet>
         <servlet-name>ManagerColor</servlet-name>
         <servlet-class>admin.ManagerColor</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagerUserAccount</servlet-name>
+        <servlet-class>admin.ManagerUserAccount</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProductDetail</servlet-name>
@@ -251,14 +247,6 @@
     <servlet-mapping>
         <servlet-name>ManagerRole</servlet-name>
         <url-pattern>/managerrole</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteRole</servlet-name>
-        <url-pattern>/deleterole</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteFeature</servlet-name>
-        <url-pattern>/deletefeature</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateRole</servlet-name>
@@ -399,6 +387,10 @@
     <servlet-mapping>
         <servlet-name>ViewProductBybutton</servlet-name>
         <url-pattern>/productList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagerUserAccount</servlet-name>
+        <url-pattern>/manageruseraccount</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

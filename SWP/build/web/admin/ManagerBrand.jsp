@@ -65,8 +65,25 @@
                 <jsp:include page="HeaderAdmin.jsp"/>
 
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px" >
-                    <h1 style="padding: 10px">Danh sách thương hiệu</h1>
+                    <h1 style="font-family: initial;">Danh sách thương hiệu</h1>
+                    <hr style="size: 30px"/>
                     <%
+                        String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
+                        if (error != null) {
+                    %>
+                    <div id="errorAlert" class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
+                        }
+                        if (info != null) {
+                    %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
+                    <%
+                        }
                         ArrayList<Brand> list = (ArrayList<Brand>) request.getAttribute("list");
                         if (list == null || list.size() == 0) {
                     %>
@@ -77,7 +94,6 @@
                             <input value="${param.brandname}" type="text" name="brandname" placeholder="Nhập tên của Brand" class="search-input" required="">
                             <input type="submit" value="Thêm" class="search-button">
                         </div>
-                        <div><h5 style="color: red; padding: 5px">${error}</h5></div>
                     </form>
 
 
@@ -91,7 +107,6 @@
                                 <input required=""value="${param.brandname}" type="text" name="brandname" placeholder="Nhập tên của Brand" class="search-input">
                                 <input type="submit" value="Thêm" class="search-button">
                             </form>
-                            <h5 style="color: red; padding: 5px; font-size: 13px">${error}</h5>
                         </div>
 
                     </div>
@@ -110,7 +125,7 @@
                             <td><%= f.getName() %></td>
 
                             <td>
-                                <a href="managerbrand?brandID=<%= f.getId() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                                <a href="managerbrand?delete=<%= f.getId() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
 
                             </td>
                         </tr>
@@ -124,5 +139,26 @@
                     %>
                 </div>
             </div>
+            <script>
+
+                window.onload = function () {
+                    var errorAlert = document.getElementById('errorAlert');
+                    var infoAlert = document.getElementById('infoAlert');
+
+                    if (errorAlert) {
+                        setTimeout(function () {
+                            errorAlert.style.display = 'none';
+                        }, 5000);
+                    }
+
+                    if (infoAlert) {
+                        setTimeout(function () {
+                            infoAlert.style.display = 'none';
+                        }, 5000);
+                    }
+                };
+
+
+            </script>
     </body>
 </html>

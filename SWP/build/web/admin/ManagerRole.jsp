@@ -63,8 +63,25 @@
             <div class="col-10" style="background: #e2e7e8">
                 <jsp:include page="HeaderAdmin.jsp"/>
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px">
-                    <h1 style="padding: 10px">Danh sách Role</h1>
+                    <h1 style="font-family: initial;">Danh sách vai trò</h1>
+                    <hr style="size: 30px"/>
                     <%
+                        String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
+                        if (error != null) {
+                    %>
+                    <div id="errorAlert" class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
+                        }
+                        if (info != null) {
+                    %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
+                    <%
+                        }
                         ArrayList<Role> list = (ArrayList<Role>) request.getAttribute("list");
                         if (list == null || list.size() == 0) {
                     %>
@@ -93,7 +110,7 @@
                                 <%
                                    // }
                                 %>
-                                <a href="${pageContext.request.contextPath}/deleterole?rID=<%= r.getRoleID()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                                <a href="${pageContext.request.contextPath}/managerrole?delete=<%= r.getRoleID()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
                             </td>
                         </tr>
                         <%
@@ -107,10 +124,29 @@
                     <form action="managerrole" method="post" class="search-form">
                         <input value="${param.rolename}" type="text" name="rolename" placeholder="Nhập tên của Role" class="search-input">
                         <input type="submit" value="Thêm" class="search-button">
-                        <h5 style="color: red; padding: 5px">${error}</h5>
                     </form>
                 </div>
             </div>
+            <script>
 
+                window.onload = function () {
+                    var errorAlert = document.getElementById('errorAlert');
+                    var infoAlert = document.getElementById('infoAlert');
+
+                    if (errorAlert) {
+                        setTimeout(function () {
+                            errorAlert.style.display = 'none';
+                        }, 5000);
+                    }
+
+                    if (infoAlert) {
+                        setTimeout(function () {
+                            infoAlert.style.display = 'none';
+                        }, 5000);
+                    }
+                };
+
+
+            </script>
     </body>
 </html>

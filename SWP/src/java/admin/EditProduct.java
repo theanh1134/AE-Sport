@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package admin;
 
 import DBContext.AdminDAO;
@@ -10,35 +7,16 @@ import Model.Product;
 import Model.ProductSizeColor;
 import Model.SubCategory;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
-/**
- *
- * @author admin
- */
+
 public class EditProduct extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EditProduct</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EditProduct at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+    
 
     private final AdminDAO dao = new AdminDAO();
 
@@ -47,13 +25,14 @@ public class EditProduct extends HttpServlet {
         String productID = request.getParameter("pID");
 
         try {
+            // sử lý chuyền dữ liệu sang trang thêm ảnh product
             if (request.getParameter("numberImg") != null) {
                 request.setAttribute("numberImg", request.getParameter("numberImg"));
                 request.setAttribute("pID", productID);
                 request.getRequestDispatcher("admin/AddProductImg.jsp").forward(request, response);
                 return;
             }
-
+            // sử lý chuyền dữ liệu sang trang thêm size và color product
             if (request.getParameter("numberColorSize") != null) {
                 request.setAttribute("listColor", dao.getAllColor());
                 request.setAttribute("listSize", dao.getAllSize());
@@ -141,8 +120,9 @@ public class EditProduct extends HttpServlet {
                 dao.updateAmountProduct();
                 forwardToEditProduct(request, response, pID);
                 return;
-            } else if ("4".equals(key)) {
-                // Handling key = 4
+             
+            } else if ("4".equals(key)) { // Handling delete size color product
+                
                 String[] colorIDs = request.getParameterValues("colorID");
                 String[] sizeIDs = request.getParameterValues("sizeID");
                 String[] quantities = request.getParameterValues("quantity");
@@ -158,7 +138,7 @@ public class EditProduct extends HttpServlet {
                     }
                 }
 
-                // Process updates
+                // Process updates size color product
                 for (int i = 0; i < colorIDs.length; i++) {
                     int colorID = Integer.parseInt(colorIDs[i]);
                     int sizeID = Integer.parseInt(sizeIDs[i]);
@@ -201,8 +181,6 @@ public class EditProduct extends HttpServlet {
             double inPrice = Double.parseDouble(request.getParameter("inprice"));
             double exPrice = Double.parseDouble(request.getParameter("exprice"));
             System.out.println(inPrice + "-" + exPrice);
-//            int discountID = Integer.parseInt(request.getParameter("discount"));
-//            int quantity = Integer.parseInt(request.getParameter("quantity"));
             String description = request.getParameter("description");
 
             Product product = new Product(productID, exPrice, description, status, sportID, productName, brandID, categoryID, discountID, inPrice);
@@ -218,8 +196,6 @@ public class EditProduct extends HttpServlet {
             }
 
         } catch (Exception e) {
-            // Log the exception
-            e.printStackTrace();
             request.setAttribute("error", "An error occurred: " + e.getMessage());
             forwardToEditProduct(request, response, pID);
         }

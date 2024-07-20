@@ -61,7 +61,8 @@
             <div class="col-10" style="background: #e2e7e8">
                 <jsp:include page="HeaderAdmin.jsp"/>
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px">
-                    <h1 style="padding: 10px">Danh sách sản phẩm </h1>
+                    <h1 style="font-family: initial;">Danh sách sản phẩm </h1>
+                    <hr style="size: 30px"/>
 
                     <%
                         String error = (String) request.getAttribute("error");
@@ -254,10 +255,18 @@
         <script>
             window.onload = function () {
                 var errorAlert = document.getElementById('errorAlert');
+                var infoAlert = document.getElementById('infoAlert');
+
                 if (errorAlert) {
                     setTimeout(function () {
                         errorAlert.style.display = 'none';
-                    }, 3000);
+                    }, 5000);
+                }
+
+                if (infoAlert) {
+                    setTimeout(function () {
+                        infoAlert.style.display = 'none';
+                    }, 5000);
                 }
             };
         </script>

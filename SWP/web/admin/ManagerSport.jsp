@@ -22,7 +22,7 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
             />
-        
+
         <style>
             table {
                 border-collapse: collapse;
@@ -60,18 +60,25 @@
                 <jsp:include page="HeaderAdmin.jsp"/>
 
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px" >
-                    <h1 style="padding: 10px">Danh sách môn thể thao</h1>
+                    <h1 style="font-family: initial;">Danh sách môn thể thao</h1>
+                    <hr style="size: 30px"/>
                     <%
                         String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
                         if (error != null) {
                     %>
                     <div id="errorAlert" class="alert alert-danger" role="alert">
-                        <%= error%>
+                        <%= error %>
                     </div>
                     <%
                         }
+                        if (info != null) {
                     %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
                     <%
+                        }
                         ArrayList<sport> list = (ArrayList<sport>) request.getAttribute("list");
                         ArrayList<String> listName = (ArrayList<String>) request.getAttribute("listName");
                         if (list == null || list.size() == 0) {
@@ -120,7 +127,7 @@
                             <td><%= s.getClb_Name()%></td>
 
                             <td>
-                                <a href="managersport?sportID=<%= s.getSport_Id()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                                <a href="managersport?delete=<%= s.getSport_Id()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
 
                             </td>
                         </tr>
@@ -165,10 +172,18 @@
 
             window.onload = function () {
                 var errorAlert = document.getElementById('errorAlert');
+                var infoAlert = document.getElementById('infoAlert');
+
                 if (errorAlert) {
                     setTimeout(function () {
                         errorAlert.style.display = 'none';
-                    }, 3000);
+                    }, 5000);
+                }
+
+                if (infoAlert) {
+                    setTimeout(function () {
+                        infoAlert.style.display = 'none';
+                    }, 5000);
                 }
             };
         </script>

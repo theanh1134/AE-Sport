@@ -59,6 +59,23 @@ public class ManagerRole extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         AdminDAO dao = new AdminDAO();
+        
+        if(request.getParameter("delete") != null){
+            int roleID = Integer.parseInt(request.getParameter("delete"));
+            try {
+                dao.deleteRoleFeatureByID(roleID);
+                dao.deleteRoleByID(roleID);
+                request.setAttribute("info", "Xóa vai trò thành công!");
+            } catch (Exception e) {
+                 request.setAttribute("error", "Vai trò đang được sử dụng không thể xóa!");
+            }
+            
+        }
+        
+        if(request.getParameter("update") != null){
+            int roleID = Integer.parseInt(request.getParameter("update")); 
+            request.setAttribute("info", "Update vai trò (ID:"+roleID+") thành công!");
+        }
         ArrayList<Role> list = dao.getAllRole();
         request.setAttribute("list", list);
         request.getRequestDispatcher("admin/ManagerRole.jsp").forward(request, response);
@@ -81,6 +98,7 @@ public class ManagerRole extends HttpServlet {
         Role roleTemp = dao.getRoleByName(roleName.toLowerCase());
         if (roleTemp == null) {
             dao.insertRole(roleName.toLowerCase());
+            request.setAttribute("info", "Thêm vai trò thàng công!");
         }else{
             request.setAttribute("error", "Tên chức năng đã tồn tại!");
         }

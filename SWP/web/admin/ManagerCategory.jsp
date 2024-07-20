@@ -54,32 +54,32 @@
             }
         </style>
     </head>
-    
+
     <style>
-            table {
-                border-collapse: collapse;
-                width: 100%;
-            }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-            table th, table td {
-                border: none; /* Remove all borders */
-                padding: 8px;
-                text-align: center;
-            }
+        table th, table td {
+            border: none; /* Remove all borders */
+            padding: 8px;
+            text-align: center;
+        }
 
-            table tr {
-                border-bottom: 1px solid #ddd; /* Add a border only to the bottom of each row */
-                background: #f8f9fa;
-            }
+        table tr {
+            border-bottom: 1px solid #ddd; /* Add a border only to the bottom of each row */
+            background: #f8f9fa;
+        }
 
-            table tr:last-child {
-                border-bottom: none; /* Remove the border from the last row */
-            }
+        table tr:last-child {
+            border-bottom: none; /* Remove the border from the last row */
+        }
 
-            table th {
-                background-color: #343a40;
-            }
-        </style>
+        table th {
+            background-color: #343a40;
+        }
+    </style>
     <body>
         <div class="row">
             <div class="col-2 border-4 border-black" style="padding-right: 0px;">
@@ -91,18 +91,25 @@
                 <jsp:include page="HeaderAdmin.jsp"/>
 
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px" >
-                    <h1 style="padding: 10px">Danh sách danh mục</h1>
+                    <h1 style="font-family: initial;">Danh sách danh mục</h1>
+                    <hr style="size: 30px"/>
                     <%
                         String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
                         if (error != null) {
                     %>
                     <div id="errorAlert" class="alert alert-danger" role="alert">
-                        <%= error%>
+                        <%= error %>
                     </div>
                     <%
                         }
+                        if (info != null) {
                     %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
                     <%
+                        }
                         ArrayList<Category> list = (ArrayList<Category>) request.getAttribute("list");
                         ArrayList<String> listType = (ArrayList<String>) request.getAttribute("listType");
                         if (list == null || list.size() == 0) {
@@ -151,7 +158,7 @@
                             <td><%= c.getType()%></td>
 
                             <td>
-                                <a href="managercategory?categoryID=<%= c.getCategory_ID()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                                <a href="managercategory?delete=<%= c.getCategory_ID()%>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
 
                             </td>
                         </tr>
@@ -204,10 +211,18 @@
 
             window.onload = function () {
                 var errorAlert = document.getElementById('errorAlert');
+                var infoAlert = document.getElementById('infoAlert');
+
                 if (errorAlert) {
                     setTimeout(function () {
                         errorAlert.style.display = 'none';
-                    }, 3000);
+                    }, 5000);
+                }
+
+                if (infoAlert) {
+                    setTimeout(function () {
+                        infoAlert.style.display = 'none';
+                    }, 5000);
                 }
             };
         </script>

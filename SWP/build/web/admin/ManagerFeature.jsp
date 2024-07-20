@@ -28,7 +28,7 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
             />
-        
+
         <style>
             table {
                 border-collapse: collapse;
@@ -56,7 +56,7 @@
         </style>
     </head>
     <body>
-        
+
         <div class="row">
             <div class="col-2 border-4 border-black" style="padding-right: 0px;">
                 <jsp:include page="AdministratorPage.jsp"/>
@@ -65,74 +65,114 @@
 
             <div class="col-10" style="background: #e2e7e8">
                 <jsp:include page="HeaderAdmin.jsp"/>
-                
+
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px" >
-                <h1 style="padding: 10px">Danh sách chức năng</h1>
-                <%
+                    <h1 style="font-family: initial;">Danh sách chức năng</h1>
+                    <hr style="size: 30px"/>
+                    <%
+                            String error = (String) request.getAttribute("error");
+                            String info = (String) request.getAttribute("info");
+                            if (error != null) {
+                    %>
+                    <div id="errorAlert" class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
+                        }
+                        if (info != null) {
+                    %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
+                    <%
+                        }
                     ArrayList<Feature> list = (ArrayList<Feature>) request.getAttribute("list");
                     if (list == null || list.size() == 0) {
-                %>
-                <h5>Chưa có chức năng nào</h5>
-
-                <%
-            } else {
-                %>
-                <table border="1px solid" style="border-collapse: collapse">
-                    <tr>
-                        <th>FeatureID</th>
-                        <th>FeatureName</th>
-                        <th>Đường dẫn</th>
-                        <th>Thao Tác</th>
-                    </tr>
-                    <%
-                        for (Feature f : list) {
                     %>
-                    <tr>
-                        <td><%= f.getFu_ID() %></td>
-                        <td><%= f.getFu_Name() %></td>
-                        <td><%= f.getUrl() %></td>
-                        <td>
-                            <a href="deletefeature?fID=<%= f.getFu_ID() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                    <button style="background-color: #212529; border-bottom: none; height: 37px; margin: 10px" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFeature">Add Feature</button>
+                    <h5>Chưa có chức năng nào</h5>
 
-                        </td>
-                    </tr>
+                    <%
+                } else {
+                    %>
+                    <div style="display: flex; justify-content: end">
+                        <button style="background-color: #212529; border-bottom: none; height: 37px; margin: 10px" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFeature">Add Feature</button>
+                    </div>
+                    <table border="1px solid" style="border-collapse: collapse">
+                        <tr>
+                            <th>FeatureID</th>
+                            <th>FeatureName</th>
+                            <th>Đường dẫn</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                        <%
+                            for (Feature f : list) {
+                        %>
+                        <tr>
+                            <td><%= f.getFu_ID() %></td>
+                            <td><%= f.getFu_Name() %></td>
+                            <td><%= f.getUrl() %></td>
+                            <td>
+                                <a href="managerfeature?delete=<%= f.getFu_ID() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+
+                            </td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                    </table><br/>
+
                     <%
                         }
                     %>
-                </table><br/>
-
-                <%
-                    }
-                %>
-
-                
-                <form action="managerfeature" method="post" style="border: 1px; padding: 5px; width: 400px;">
-                    <h2>Thêm một chức năng mới</h2>
-                    <table style="width: 100%;">
-                        <tr>
-                            <td style="padding: 4px;">
-                                <label for="fuName">Feature Name:</label>
-                            </td>
-                            <td style="padding: 4px;">
-                                <input placeholder="Nhập tên của chức năng" value="${param.fuName}"type="text" id="fuName" name="fuName" required style="width: 100%; padding: 4px;"> <h5 class="fs-6" style="color: red">${error}</h5>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 4px;">
-                                <label for="url">URL:</label>
-                            </td>
-                            <td style="padding: 4px;">
-                                <input  placeholder="Nhập đường dẫn của chức năng" value="${param.url}" type="text" id="url" name="url" required style="width: 100%; padding: 4px;"> <h5 class="fs-6" style="color: red">${error2}</h5>
-                            </td>
-                        </tr>
-                         
-                    </table>
-                            <input type="submit" value="Add Feature" class="search-button" style="margin: 5px; border-radius: 4px;"">
-                </form>
-
                 </div>
-
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addFeature" tabindex="-1" aria-labelledby="addFeatureLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addSportModalLabel">Add Feature</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="${pageContext.request.contextPath}/managerfeature" method="post">
+                            <div class="mb-3">
+                                <label for="fuName" class="form-label">Feature Name</label>
+                                <input placeholder="Nhập tên của chức năng" type="text" class="form-control" id="fuName" name="fuName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="clbName" class="form-label">URL</label>
+                                <input placeholder="Nhập đường dẫn của chức năng" type="text" class="form-control" id="url" name="url" required>
+                            </div>
+                            <button style="background-color: #212529" type="submit" class="btn btn-primary">Add</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+
+            window.onload = function () {
+                var errorAlert = document.getElementById('errorAlert');
+                var infoAlert = document.getElementById('infoAlert');
+
+                if (errorAlert) {
+                    setTimeout(function () {
+                        errorAlert.style.display = 'none';
+                    }, 5000);
+                }
+
+                if (infoAlert) {
+                    setTimeout(function () {
+                        infoAlert.style.display = 'none';
+                    }, 5000);
+                }
+            };
+
+
+        </script>                   
     </body>
 </html>

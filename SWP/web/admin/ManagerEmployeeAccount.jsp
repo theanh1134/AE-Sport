@@ -64,24 +64,42 @@
             <div class="col-10" style="background: #e2e7e8">
                 <jsp:include page="HeaderAdmin.jsp"/>
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px">
-                    <h1 style="padding: 10px">Danh sách tài khoản <span style="color: red">nhân viên</span></h1>
-
+                    <h1 style="font-family: initial;">Danh sách tài khoản <span style="color: red">nhân viên</span></h1>
+                    <hr style="size: 30px"/>
+                    <%
+                        String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
+                        if (error != null) {
+                    %>
+                    <div id="errorAlert" class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
+                        }
+                        if (info != null) {
+                    %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
+                    <%
+                        }
+                        ArrayList<EmployeeAccount> list = (ArrayList<EmployeeAccount>) request.getAttribute("list");
+                        if (list == null || list.size() == 0) {
+                    %>
+                    <h5>Chưa có nhân viên nào</h5>
                     <form action="manageremployeeaccount" method="post" class="search-form">
                         <input type="text" name="fullname" value="${param.fullname}" placeholder="Tìm kiếm theo tên" class="search-input">
                         <input type="submit" value="Search" class="search-button">
                     </form>
-
-                    <%
-                        ArrayList<EmployeeAccount> list = (ArrayList<EmployeeAccount>) request.getAttribute("list");
-                        if (list == null || list.size() == 0) {
-                    %>
-                    <h5 style="padding: 10px">Chưa có nhân viên nào</h5>
-
+                    
                     <%
                     } else {
                     %>
-
-                    <h5 style="padding: 10px">Tổng <%=list.size()%> tài khoản</h5>
+                    <h5>Tổng <%=list.size()%> tài khoản</h5>
+                    <form action="manageremployeeaccount" method="post" class="search-form" style="margin-bottom: 10px">
+                        <input type="text" name="fullname" value="${param.fullname}" placeholder="Tìm kiếm theo tên" class="search-input">
+                        <input type="submit" value="Search" class="search-button">
+                    </form>
                     <table border="1" style="border-collapse: collapse;">
                         <tr>
                             <th>UserID</th>
@@ -146,6 +164,23 @@
                     }
                     checkbox.closest('form').submit();
                 }
+
+                window.onload = function () {
+                    var errorAlert = document.getElementById('errorAlert');
+                    var infoAlert = document.getElementById('infoAlert');
+
+                    if (errorAlert) {
+                        setTimeout(function () {
+                            errorAlert.style.display = 'none';
+                        }, 5000);
+                    }
+
+                    if (infoAlert) {
+                        setTimeout(function () {
+                            infoAlert.style.display = 'none';
+                        }, 5000);
+                    }
+                };
             </script>
 
 

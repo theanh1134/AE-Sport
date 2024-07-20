@@ -65,8 +65,25 @@
                 <jsp:include page="HeaderAdmin.jsp"/>
 
                 <div style="margin: 30px; background: white;padding: 20px;border-radius: 10px" >
-                    <h1 style="padding: 10px">Danh sách màu</h1>
+                    <h1 style="font-family: initial;">Danh sách màu</h1>
+                    <hr style="size: 30px"/>
                     <%
+                        String error = (String) request.getAttribute("error");
+                        String info = (String) request.getAttribute("info");
+                        if (error != null) {
+                    %>
+                    <div id="errorAlert" class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
+                        }
+                        if (info != null) {
+                    %>
+                    <div id="infoAlert" class="alert alert-success" role="alert">
+                        <%= info %>
+                    </div>
+                    <%
+                        }
                         ArrayList<Color> list = (ArrayList<Color>) request.getAttribute("list");
                         if (list == null || list.size() == 0) {
                     %>
@@ -91,7 +108,6 @@
                                 <input required=""value="${param.colorname}" type="text" name="colorname" placeholder="Nhập màu" class="search-input">
                                 <input type="submit" value="Thêm" class="search-button">
                             </form>
-                            <h5 style="color: red; padding: 5px; font-size: 13px">${error}</h5>
                         </div>
 
                     </div>
@@ -110,7 +126,7 @@
                             <td><%= c.getColor_Name() %></td>
 
                             <td>
-                                <a href="managercolor?colorID=<%= c.getColor_ID() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
+                                <a href="managercolor?delete=<%= c.getColor_ID() %>" class="delete-link" onclick="return confirm('Bạn có chắc muốn xóa không?');">Delete</a> &nbsp;&nbsp;
 
                             </td>
                         </tr>
@@ -124,5 +140,26 @@
                     %>
                 </div>
             </div>
+            <script>
+
+                window.onload = function () {
+                    var errorAlert = document.getElementById('errorAlert');
+                    var infoAlert = document.getElementById('infoAlert');
+
+                    if (errorAlert) {
+                        setTimeout(function () {
+                            errorAlert.style.display = 'none';
+                        }, 5000);
+                    }
+
+                    if (infoAlert) {
+                        setTimeout(function () {
+                            infoAlert.style.display = 'none';
+                        }, 5000);
+                    }
+                };
+
+
+            </script>
     </body>
 </html>

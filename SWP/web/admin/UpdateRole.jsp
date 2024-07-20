@@ -44,7 +44,8 @@
                         ArrayList<Feature> roleFeatures = (ArrayList<Feature>) request.getAttribute("roleFeatures");
                         if (list != null && list.size() > 0) {
                     %>
-                    <h1 style="margin: 20px 0">Update Role: <%=request.getAttribute("nameRole")%></h1>
+                    <h1 style=" font-family: initial">Update vai trò: (<%=request.getAttribute("nameRole")%>)</h1>
+                    <hr>
                     <h5 style="margin-left: 5px">Các chức năng có thể làm:</h5>
                     <form action="updaterole" method="post">  
 

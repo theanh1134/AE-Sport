@@ -5,11 +5,10 @@
         <group>
             <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/src/java/admin/ManagerProduct.java</file>
             <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/web/admin/EditProduct.jsp</file>
-            <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/web/META-INF/context.xml</file>
-            <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/web/admin/ManagerProduct.jsp</file>
             <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/src/java/DBContext/AdminDAO.java</file>
-            <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/web/WEB-INF/web.xml</file>
-            <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/src/java/admin/ManagerDiscount.java</file>
+            <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/web/admin/ManagerProduct.jsp</file>
+            <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/src/java/admin/DeleteProduct.java</file>
+            <file>file:/D:/Downloads/SWP-Git/AE-Sport/SWP/src/java/admin/EditProduct.java</file>
         </group>
     </open-files>
 </project-private>

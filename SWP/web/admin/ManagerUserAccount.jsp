@@ -75,9 +75,9 @@
                             <input type="text" name="fullname" placeholder="Tìm kiếm theo tên" value="${param.fullname}" class="search-input">
                             <input type="submit" value="Search" class="search-button">
                         </form>
-                    <button style="background: #343a40;color: white; height: 43px; border-radius: 4px " onclick="location.href = '${pageContext.request.contextPath}/adduseraccount'">Add UserAccount</button>
+                        <button style="background: #343a40;color: white; height: 43px; border-radius: 4px " onclick="location.href = '${pageContext.request.contextPath}/adduseraccount'">Add UserAccount</button>
                     </div>
-                    
+
                     <%
                     } else {
                     %>

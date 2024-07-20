@@ -56,7 +56,6 @@ public class ManageHotProducts extends HttpServlet {
             ArrayList<Category> listCA = b.getCategorys(select1);
             request.setAttribute("listCA", listCA);
         }
-
         if (category != null && category != "") {
             ArrayList<SubCategory> listSub = b.getSubCategorys(Integer.parseInt(category));
             request.setAttribute("listSub", listSub);
@@ -92,8 +91,6 @@ public class ManageHotProducts extends HttpServlet {
 
         if (select1 != null && category != null && Subcategory != null) {
             ArrayList<product> products = p.getproductAllArrayListByCondition(Integer.parseInt(Subcategory), Integer.parseInt(category), select1, "normal");
-            System.out.println(category);
-            System.out.println(Subcategory);
             request.setAttribute("products", products);
         }
 

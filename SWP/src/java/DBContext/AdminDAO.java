@@ -1873,6 +1873,10 @@ public class AdminDAO extends DBContext {
 //        Product p = new Product(123, "", "none", 0, "Giay Cao", 0, 1, 0);
 //        System.out.println(dao.insertProduct(p));
         System.out.println(dao.getDiscountByName("womanday"));
-
+        try {
+            dao.deleteSubCategoryByID(2);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

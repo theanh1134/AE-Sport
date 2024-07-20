@@ -17,7 +17,7 @@ public class ManagerEmployeeAccount extends HttpServlet {
         AdminDAO dao = new AdminDAO();
         if (request.getParameter("role") != null) {
             if (request.getParameter("role").equals("admin")) {
-                request.setAttribute("info", "Không thể chỉnh sửa Role của tài khoản (admin gốc)!");
+                request.setAttribute("error", "Không thể chỉnh sửa Role của tài khoản (admin gốc)!");
             } else {
                 int uID = Integer.parseInt(request.getParameter("role"));
                 request.setAttribute("info", "Chỉnh sửa vai trò tài khoản(ID:" + uID + ") thành công!");

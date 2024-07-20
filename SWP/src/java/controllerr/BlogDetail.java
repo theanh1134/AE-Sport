@@ -4,21 +4,20 @@
  */
 package controllerr;
 
-import Model.UserAccount;
-import data.AuthorizationContext;
-import java.io.IOException;
-import java.io.PrintWriter;
+import data.BlogContext;
+import entity.Blog;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  *
  * @author Hoàng Sơn
  */
-public class HomeStaff extends HttpServlet {
+public class BlogDetail extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -32,26 +31,15 @@ public class HomeStaff extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AuthorizationContext db = new AuthorizationContext();
-        UserAccount account = (UserAccount) request.getSession().getAttribute("CRRAccount");
+        BlogContext blogDB = new BlogContext();
+        String bID = request.getParameter("blogID");
+        Blog blog = blogDB.getBlog(Integer.parseInt(bID));
+        blogDB.updateNumber_of_views(Integer.parseInt(bID));
+        request.setAttribute("blog", blog);
+        request.getRequestDispatcher("view/Blog/BlogDetail.jsp").forward(request, response);
 
-        if (account != null) {
-            String role = db.getRole(account.getUse_ID());
-            if ("admin".equals(role) || role.contains("nhan_vien")) {
-                request.getRequestDispatcher("view/Homestaff/HomeStaff.jsp").forward(request, response);
-            } else if ("user".equals(role)) {
-                request.getRequestDispatcher("view/AccessInvalid.jsp").forward(request, response);
-            }
-        } else {
-            request.getRequestDispatcher("view/AccessInvalid.jsp").forward(request, response);
-        }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

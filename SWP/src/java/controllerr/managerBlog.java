@@ -4,6 +4,7 @@
  */
 package controllerr;
 
+import Model.UserAccount;
 import data.BlogContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -67,7 +68,9 @@ public class managerBlog extends HttpServlet {
                 blogdb.updateBlog(Integer.parseInt(Blog_ID), title, img, detail, Integer.parseInt(cate));
             }
         } else if ("2".equals(mode)) {
-            blogdb.insertBlog(title, img, detail, Integer.parseInt(cate));
+            UserAccount account = (UserAccount) request.getSession().getAttribute("CRRAccount");
+
+            blogdb.insertBlog(title, img, detail, Integer.parseInt(cate), account.getFull_Name());
         }
         request.getRequestDispatcher("view/Blog/manageBlog.jsp").forward(request, response);
     }

@@ -62,7 +62,7 @@ public class AccountDAO extends DBContext {
     public int insertUserAccount(UserAccount u) {
         int newId = 0;
         try {
-            String sql = "insert into [UserAccounts]([address],[password_hash],[username],[full_name],[email],[phone_number],[status]) values(?,?,?,?,?,?,'none')";
+            String sql = "insert into [UserAccounts]([address],[password_hash],[username],[full_name],[email],[phone_number],[status],[dateCreate]) values(?,?,?,?,?,?,'none',?)";
             PreparedStatement st = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, u.getAddress());
             st.setString(2, u.getPassword());
@@ -70,6 +70,8 @@ public class AccountDAO extends DBContext {
             st.setString(4, u.getFull_Name());
             st.setString(5, u.getEmail());
             st.setString(6, u.getPhone_number());
+            st.setDate(7, u.getDateCreate());
+
             int affectedRows = st.executeUpdate();
 
             if (affectedRows > 0) {

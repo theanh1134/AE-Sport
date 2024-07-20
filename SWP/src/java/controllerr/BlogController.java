@@ -24,38 +24,17 @@ public class BlogController extends HttpServlet {
             throws ServletException, IOException {
         BlogContext blogDB = new BlogContext();
 
-        String bID = request.getParameter("blogID");
-        if (bID != null) {
-            Blog blog = blogDB.getBlog(Integer.parseInt(bID));
-            blogDB.updateNumber_of_views(Integer.parseInt(bID));
-            request.setAttribute("blog", blog);
-        }
         if (request.getParameter("page") != null) {
             ArrayList<Blog> list = blogDB.getBlogsPaging(Integer.parseInt(request.getParameter("page")));
             Blog mainBlog = blogDB.getMainBlog();
             request.setAttribute("list", list);
             request.setAttribute("mainBlog", mainBlog);
         }
-
         if (request.getParameter("categoryBlog") != null) {
             ArrayList<Blog> listBlogbyCate = blogDB.getBlogsByCategory(Integer.parseInt(request.getParameter("categoryBlog")));
             request.setAttribute("listBlogbyCate", listBlogbyCate);
         }
-        request.getRequestDispatcher("view/Blog/Blog.jsp").forward(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+        request.getRequestDispatcher("view/Blog/BlogList.jsp").forward(request, response);
     }
 
     /**
@@ -68,5 +47,4 @@ public class BlogController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-   
 }

@@ -20,7 +20,7 @@ public class ManageHotProductHomePage extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductContext p = new ProductContext();
         CategoryContext b = new CategoryContext();
-        
+
         AuthorizationContext db = new AuthorizationContext();
         UserAccount account = (UserAccount) req.getSession().getAttribute("CRRAccount");
         if (account != null) {
@@ -30,7 +30,7 @@ public class ManageHotProductHomePage extends HttpServlet {
             int idRole = db.getRoleIDbyRoleName(role);
             ArrayList<String> fetures = db.getFeature(idRole);
 
-            if (fetures.contains(servletPath)) {
+            if (fetures.contains(servletPath) || "admin".equals(role)) {
                 String type = req.getParameter("type");
                 String checkProducts = req.getParameter("checkProducts");
                 String select1 = req.getParameter("select1");

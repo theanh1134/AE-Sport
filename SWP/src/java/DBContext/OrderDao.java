@@ -90,10 +90,10 @@ public class OrderDao extends DBContext {
 
                 // Lấy thông tin sản phẩm và hình ảnh sản phẩm
                 Product product = getProductById(proId);
-//                ImgProduct productImg = getImgProductByProductId(proId);
+                ImgProduct productImg = getImgProductByProductId(proId);
 //
 //                // Thiết lập hình ảnh cho sản phẩm
-//                product.setImg(productImg);
+                product.setImg(productImg);
 
                 // Thiết lập sản phẩm cho OrderItem
                 item.setProduct(product);
@@ -107,7 +107,8 @@ public class OrderDao extends DBContext {
         }
         return null;
     }
-     public Address getAddressByUserID(int userId) {
+
+    public Address getAddressByUserID(int userId) {
         Address address = null;
         String sql = "SELECT * FROM Address WHERE user_ID = ?";
         try {
@@ -130,7 +131,6 @@ public class OrderDao extends DBContext {
         }
         return address;
     }
-
 
     public ImgProduct getImgProductByProductId(int productId) {
         ImgProduct imgProduct = null;

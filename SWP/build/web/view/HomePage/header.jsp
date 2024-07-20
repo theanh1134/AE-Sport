@@ -136,7 +136,7 @@
                         <span>&#124;</span>
                         <li class="mx-4">
                             <c:if test="${sessionScope.CRRAccount == null}">
-                                <a class="font-monospace text-decoration-none text-white" href="view/Login.jsp">Đăng Nhập</a>
+                                <a class="font-monospace text-decoration-none text-white" href="Login">Đăng Nhập</a>
                             </c:if>
                             <c:if test="${sessionScope.CRRAccount != null}">
                                 <a href="view/ViewProfile.jsp" class="font-monospace text-decoration-none text-white">${sessionScope.CRRAccount.getFull_Name()}</a>

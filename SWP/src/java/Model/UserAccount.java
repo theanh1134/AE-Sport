@@ -9,9 +9,10 @@ package Model;
  * @author admin
  */
 import java.sql.*;
+
 public class UserAccount {
 
-   private int use_ID;
+    private int use_ID;
     private String address;
     private String password;
     private String userName;
@@ -21,9 +22,14 @@ public class UserAccount {
     private String img;
     private String status;
     private Date dateCreate;
-
     public UserAccount() {
     }
+
+    
+    
+    
+    
+    
     public UserAccount(int use_ID, String password, String userName, String full_Name, String email, String phone_number, String img, String status, Date dateCreate) {
         this.use_ID = use_ID;
         this.password = password;
@@ -35,7 +41,7 @@ public class UserAccount {
         this.status = status;
         this.dateCreate = dateCreate;
     }
-    
+
     public UserAccount(int use_ID, String password, String userName, String full_Name, String email, String phone_number, String img) {
         this.use_ID = use_ID;
         this.password = password;
@@ -43,9 +49,10 @@ public class UserAccount {
         this.full_Name = full_Name;
         this.email = email;
         this.phone_number = phone_number;
-        this.img = img;   
+        this.img = img;
     }
-     public UserAccount( String password, String userName, String full_Name, String email, String phone_number, String img, String status, Date dateCreate) {    
+
+    public UserAccount(String password, String userName, String full_Name, String email, String phone_number, String img, String status, Date dateCreate) {
         this.password = password;
         this.userName = userName;
         this.full_Name = full_Name;
@@ -56,7 +63,6 @@ public class UserAccount {
         this.dateCreate = dateCreate;
     }
 
-    
 //    public UserAccount(int use_ID, String address, String password, String userName, String full_Name, String email, String phone_number) {
 //        this.use_ID = use_ID;
 //        this.address = address;
@@ -66,7 +72,6 @@ public class UserAccount {
 //        this.email = email;
 //        this.phone_number = phone_number;
 //    }
-
     public UserAccount(int use_ID, String address, String full_Name, String email, String phone_number) {
         this.use_ID = use_ID;
         this.address = address;
@@ -75,7 +80,6 @@ public class UserAccount {
         this.phone_number = phone_number;
     }
 
-    
     public String getImg() {
         return img;
     }
@@ -99,7 +103,6 @@ public class UserAccount {
     public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
     }
-    
 
     public UserAccount(String address, String userName, String pass, String full_Name, String email, String phone_number) {
         this.address = address;

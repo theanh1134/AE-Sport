@@ -34,17 +34,13 @@ public class HomeStaff extends HttpServlet {
             throws ServletException, IOException {
         AuthorizationContext db = new AuthorizationContext();
         UserAccount account = (UserAccount) request.getSession().getAttribute("CRRAccount");
+
         if (account != null) {
-            String servletPath = request.getServletPath();
-            servletPath = servletPath.substring(1);
             String role = db.getRole(account.getUse_ID());
-            int idRole = db.getRoleIDbyRoleName(role);
-            ArrayList<String> fetures = db.getFeature(idRole);
-            if (fetures.contains(servletPath)) {
+            if ("admin".equals(role) || role.contains("nhan_vien")) {
                 request.getRequestDispatcher("view/Homestaff/HomeStaff.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("view/AccessInvalid.jsp").forward(request, response);
             }
+
         } else {
             request.getRequestDispatcher("view/AccessInvalid.jsp").forward(request, response);
 

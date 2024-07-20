@@ -27,7 +27,7 @@ public class OrderController extends HttpServlet {
         String action = request.getParameter("action");
         UserAccount u = (UserAccount) request.getSession().getAttribute("CRRAccount");
         if (u == null) {
-            response.sendRedirect("view/Login.jsp");
+            response.sendRedirect("Login");
         } else {
             int user_id = u.getUse_ID();
             try {

@@ -82,6 +82,7 @@
             .btn-pink {
                 background-color: #fcb2b2 !important;
             }
+     
         </style>
     </head>
 
@@ -90,8 +91,8 @@
         <jsp:include page="../HomePage/header.jsp"/>
         <div class="m-223 container  ">
             <nav aria-label="breadcrumb" >
-                <ol class="breadcrumb m-5 ms-0 transition-1">
-                    <li class="breadcrumb-item">
+                <ol class="breadcrumb my-5 py-5 ms-0 transition-1">
+                    <li class="breadcrumb-item ">
                         <span><i class="bi bi-house-door mx-3"></i></span>
                         <a href="HomePage" class="text-decoration-none text-black">Home</a>
                     </li>

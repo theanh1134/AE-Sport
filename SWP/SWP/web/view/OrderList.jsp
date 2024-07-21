@@ -1,12 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Order List</title>
+        <title>Danh Sách Đơn Hàng</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -248,7 +248,7 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-4">
-                                <h2>Order <b>List</b></h2>
+                                <h2>Danh Sách <b>Đơn Hàng</b></h2>
                             </div>
                         </div>
                     </div>
@@ -259,13 +259,13 @@
                             <div class="col-sm-9">
                                 <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                 <div class="filter-group">
-                                    <label>Name</label>
+                                    <label>Tên</label>
                                     <input type="text" class="form-control" name="name">
                                 </div>
                                 <div class="filter-group">
-                                    <label>Location</label>
+                                    <label>Vị trí</label>
                                     <select class="form-control" name="location">
-                                        <option>All</option>
+                                        <option>Tất cả</option>
                                         <option>An Giang</option>
                                         <option>Bà Rịa - Vũng Tàu</option>
                                         <option>Bắc Giang</option>
@@ -332,13 +332,13 @@
                                     </select>
                                 </div>
                                 <div class="filter-group">
-                                    <label>Status</label>
+                                    <label>Tình trạng</label>
                                     <select class="form-control" name="status">
-                                        <option value="any">Any</option>
-                                        <option>Delivered</option>
-                                        <option>Shipping</option>
-                                        <option>Pending</option>
-                                        <option>Cancelled</option>
+                                        <option value="any">Tất cả</option>
+                                        <option>Đã giao</option>
+                                        <option>Đang vận chuyển</option>
+                                        <option>Chờ xử lý</option>
+                                        <option>Đã hủy</option>
                                     </select>
                                 </div>
                                 <span class="filter-icon"><i class="fa fa-filter"></i></span>
@@ -349,12 +349,12 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Customer</th>
-                                <th>Location</th>
-                                <th>Order Date</th>
-                                <th>Status</th>
-                                <th>Net Amount</th>
-                                <th>Action</th>
+                                <th>Khách hàng</th>
+                                <th>Vị trí</th>
+                                <th>Ngày đặt hàng</th>
+                                <th>Tình trạng</th>
+                                <th>Số tiền</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -365,8 +365,8 @@
                                     <td>${order.user.address}</td>
                                     <td>${order.order_date}</td>
                                     <td><span class="status text-success">&bull;</span>${order.order_status}</td>
-                                    <td>${order.total_mount}</td>
-                                    <td><a href="./Order?action=detail&idOrder=${order.order_ID}" class="view" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
+                                    <td>${order.total_mount}VND</td>
+                                    <td><a href="./Order?action=detail&idOrder=${order.order_ID}" class="view" title="Xem Chi Tiết" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -375,4 +375,33 @@
             </div>
         </div>
     </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function filterTable() {
+                var name = $("input[name='name']").val().toLowerCase();
+                var location = $("select[name='location']").val().toLowerCase();
+                var status = $("select[name='status']").val().toLowerCase();
+
+                $("table tbody tr").each(function() {
+                    var row = $(this);
+                    var rowName = row.find("td:eq(1)").text().toLowerCase();
+                    var rowLocation = row.find("td:eq(2)").text().toLowerCase();
+                    var rowStatus = row.find("td:eq(4)").text().toLowerCase();
+
+                    if ((name === "" || rowName.includes(name)) &&
+                        (location === "tất cả" || rowLocation.includes(location)) &&
+                        (status === "any" || rowStatus.includes(status))) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            }
+
+            $("input[name='name'], select[name='location'], select[name='status']").on("input change", function() {
+                filterTable();
+            });
+        });
+    </script>
 </html>

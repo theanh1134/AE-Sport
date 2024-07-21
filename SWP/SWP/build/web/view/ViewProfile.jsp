@@ -69,14 +69,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Email</label>
-                                                                <input id="email" class="form-control" value="${sessionScope.CRRAccount.email}" >
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    
                                                    
                                                     <div class="row">
                                                         <div class="col">

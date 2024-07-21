@@ -8,8 +8,12 @@ import Model.UserAccount;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -174,64 +178,121 @@ public class AccountDAO extends DBContext {
             System.out.println(e);
         }
     }
-    // Phương thức để lấy báo cáo đăng ký người dùng
+   // Phương thức để lấy báo cáo đăng ký người dùng
 
-    public Map<String, Integer> getUserRegistrationReport(String period) {
-        String sql = "SELECT dateCreate, COUNT(*) as registration_count FROM UserAccounts WHERE dateCreate >= DATEADD(DAY, -?, GETDATE()) GROUP BY dateCreate";
-        Map<String, Integer> report = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, period.equals("day") ? 1 : (period.equals("week") ? 7 : 30));
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    report.put(rs.getString("dateCreate"), rs.getInt("registration_count"));
-                }
+
+
+public Map<String, Integer> getAllUserRegistrationReport() {
+    String sql = "SELECT dateCreate, COUNT(*) as registration_count FROM UserAccounts GROUP BY dateCreate";
+    Map<String, Integer> report = new TreeMap<>(); // TreeMap để tự động sắp xếp theo key
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy"); // Định dạng ngày
+    try (PreparedStatement ps = connection.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            String date = rs.getString("dateCreate");
+            String formattedDate = dateFormat.format(rs.getDate("dateCreate")); // Định dạng ngày
+            report.put(formattedDate, rs.getInt("registration_count"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return report;
+}
+
+
+
+
+
+   
+
+    public int getRegistrationsToday() {
+        String sql = "SELECT COUNT(*) FROM UserAccounts WHERE dateCreate = CAST(GETDATE() AS DATE)";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return report;
+        return 0;
     }
 
-    // Phương thức để lấy báo cáo hoạt động người dùng
-    public Map<String, Integer> getUserActivityReport(String period) {
-        String sql = "";
-        if ("day".equals(period)) {
-            sql = "SELECT dateCreate, COUNT(*) as activity_count FROM UserAccounts WHERE status = 'active' AND dateCreate >= DATEADD(DAY, -1, GETDATE()) GROUP BY dateCreate";
-        } else if ("week".equals(period)) {
-            sql = "SELECT dateCreate, COUNT(*) as activity_count FROM UserAccounts WHERE status = 'active' AND dateCreate >= DATEADD(DAY, -7, GETDATE()) GROUP BY dateCreate";
-        } else if ("month".equals(period)) {
-            sql = "SELECT dateCreate, COUNT(*) as activity_count FROM UserAccounts WHERE status = 'active' AND dateCreate >= DATEADD(DAY, -30, GETDATE()) GROUP BY dateCreate";
-        }
-
-        Map<String, Integer> report = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    report.put(rs.getString("dateCreate"), rs.getInt("activity_count"));
-                }
+    public int getRegistrationsThisWeek() {
+        String sql = "SELECT COUNT(*) FROM UserAccounts WHERE DATEPART(WEEK, dateCreate) = DATEPART(WEEK, GETDATE()) AND DATEPART(YEAR, dateCreate) = DATEPART(YEAR, GETDATE())";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return report;
+        return 0;
     }
 
-    // Phương thức để lấy báo cáo hoạt động người dùng tùy chỉnh
-    public Map<String, Integer> getCustomUserActivityReport(String startDate, String endDate) {
-        String sql = "SELECT dateCreate, COUNT(*) as registration_count FROM UserAccounts WHERE dateCreate BETWEEN ? AND ? GROUP BY dateCreate";
-        Map<String, Integer> report = new HashMap<>();
+    public int getRegistrationsThisMonth() {
+        String sql = "SELECT COUNT(*) FROM UserAccounts WHERE DATEPART(MONTH, dateCreate) = DATEPART(MONTH, GETDATE()) AND DATEPART(YEAR, dateCreate) = DATEPART(YEAR, GETDATE())";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    
+
+   
+//lấy tất cả tài khoản
+
+    public List<UserAccount> getAllUsers() {
+        List<UserAccount> userList = new ArrayList<>();
+        String sql = "SELECT * FROM UserAccounts";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, startDate);
-            ps.setString(2, endDate);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    report.put(rs.getString("dateCreate"), rs.getInt("registration_count"));
+                    UserAccount user = new UserAccount(
+                            rs.getInt("user_ID"),
+                            rs.getString("address"),
+                            rs.getString("password_hash"),
+                            rs.getString("username"),
+                            rs.getString("full_name"),
+                            rs.getString("email"),
+                            rs.getString("phone_number")
+                    );
+                    userList.add(user);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return report;
+        return userList;
+    }
+
+    public static void main(String[] args) {
+        AccountDAO dao = new AccountDAO();
+
+        // Test getRegistrationsToday
+        int registrationsToday = dao.getRegistrationsToday();
+        System.out.println("Registrations Today: " + registrationsToday);
+
+        // Test getRegistrationsThisWeek
+        int registrationsThisWeek = dao.getRegistrationsThisWeek();
+        System.out.println("Registrations This Week: " + registrationsThisWeek);
+
+        // Test getRegistrationsThisMonth
+        int registrationsThisMonth = dao.getRegistrationsThisMonth();
+        System.out.println("Registrations This Month: " + registrationsThisMonth);
+
+       
+
+        // Test getAllUsers
+        List<UserAccount> userList = dao.getAllUsers();
+        System.out.println("All Users:");
+        for (UserAccount user : userList) {
+            System.out.println(user);
+        }
     }
 
 }

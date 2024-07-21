@@ -11,10 +11,13 @@ import Model.OrderItem;
 import Model.Payment;
 import Model.Product;
 import Model.Ship;
-import Model.UserAccount;
+import Model.Account;
 import java.util.List;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -90,10 +93,10 @@ public class OrderDao extends DBContext {
 
                 // Lấy thông tin sản phẩm và hình ảnh sản phẩm
                 Product product = getProductById(proId);
-                ImgProduct productImg = getImgProductByProductId(proId);
-//
-//                // Thiết lập hình ảnh cho sản phẩm
-                product.setImg(productImg);
+               ImgProduct productImg = getImgProductByProductId(proId);
+
+               // Thiết lập hình ảnh cho sản phẩm
+            product.setImg(productImg);
 
                 // Thiết lập sản phẩm cho OrderItem
                 item.setProduct(product);
@@ -107,8 +110,7 @@ public class OrderDao extends DBContext {
         }
         return null;
     }
-
-    public Address getAddressByUserID(int userId) {
+     public Address getAddressByUserID(int userId) {
         Address address = null;
         String sql = "SELECT * FROM Address WHERE user_ID = ?";
         try {
@@ -131,6 +133,7 @@ public class OrderDao extends DBContext {
         }
         return address;
     }
+
 
     public ImgProduct getImgProductByProductId(int productId) {
         ImgProduct imgProduct = null;
@@ -303,8 +306,8 @@ public class OrderDao extends DBContext {
         return null;
     }
 
-    public UserAccount getUserByOrderId(int orderId) {
-        UserAccount user = null;
+    public Account getUserByOrderId(int orderId) {
+        Account user = null;
         String sql = "SELECT u.* FROM UserAccounts u JOIN [dbo].[Order] o ON u.user_ID = o.user_ID WHERE o.order_ID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -319,7 +322,7 @@ public class OrderDao extends DBContext {
                 String email = rs.getString("email");
                 String phoneNumber = rs.getString("phone_number");
 
-                user = new UserAccount(userId, address, passwordHash, username, fullName, email, phoneNumber);
+                user = new Account(userId, address, passwordHash, username, fullName, email, phoneNumber);
             }
             if (rs != null) {
                 rs.close();
@@ -343,23 +346,148 @@ public class OrderDao extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    //Report Order
+     public List<Order> getOrdersByThisMonth() {
+        String sql = "SELECT CAST(order_date AS DATE) AS order_day, COUNT(*) AS order_count " +
+                     "FROM [Order] " +
+                     "WHERE MONTH(order_date) = MONTH(GETDATE()) AND YEAR(order_date) = YEAR(GETDATE()) " +
+                     "GROUP BY CAST(order_date AS DATE) " +
+                     "ORDER BY order_day;";
+        List<Order> orders = new ArrayList<>();
 
-    public static void main(String[] args) {
-        // Assuming you already have a connection object named 'connection'
+        try (PreparedStatement st = connection.prepareStatement(sql);
+             ResultSet rs = st.executeQuery()) {
 
-        try {
-            // Create OrderDao instance with the existing connection
-            OrderDao orderDao = new OrderDao();
+            while (rs.next()) {
+                Date orderDay = rs.getDate("order_day");
+                int orderCount = rs.getInt("order_count");
 
-            // Test getPaymentByOrderId method
-            int testOrderId = 1; // Change this order ID as needed for your database data
-            Payment payment = orderDao.getPaymentByOrderId(testOrderId);
-            System.out.println("Payment details for order ID " + testOrderId + ":");
-            System.out.println(payment);
-
-        } catch (Exception e) {
+                // Tạo một đối tượng Order để đại diện cho số lượng đơn hàng trong ngày
+                Order order = new Order();
+                order.setOrder_date(orderDay); // Thiết lập ngày đơn hàng
+                order.setOrderCount(orderCount);
+                orders.add(order); // Thêm vào danh sách đơn hàng
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return orders;
+    }
+    
+   
+
+public Map<String, Integer> getOrdersCountByStatusThisMonth() {
+    Map<String, Integer> orderCounts = new HashMap<>();
+    String sql = "SELECT order_status, COUNT(*) AS count\n" +
+"FROM [dbo].[Order]\n" +
+"WHERE MONTH(order_date) = MONTH(GETDATE()) \n" +
+"  AND YEAR(order_date) = YEAR(GETDATE())\n" +
+"GROUP BY order_status";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            String status = rs.getString("order_status");
+            int count = rs.getInt("count");
+            orderCounts.put(status, count);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return orderCounts;
+}
+
+ public int getTotalOrdersThisMonth() {
+        int totalOrders = 0;
+        String sql = "SELECT COUNT(*) as total_orders " +
+                     "FROM [Order] " +
+                     "WHERE YEAR(order_date) = YEAR(GETDATE()) " +
+                     "AND MONTH(order_date) = MONTH(GETDATE())";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet rs = preparedStatement.executeQuery()) {
+            if (rs.next()) {
+                totalOrders = rs.getInt("total_orders");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalOrders;
     }
 
+ 
+    
+    //Sales report
+    
+    public Map<String, Integer> getSalesByDayThisMonth() {
+        Map<String, Integer> dailyRevenue = new LinkedHashMap<>();
+        String sql = "SELECT " +
+                     "    CONVERT(DATE, o.order_date) AS order_date, " +
+                     "    SUM(oi.quantity * oi.price_unit) AS daily_revenue " +
+                     "FROM " +
+                     "    [Order] o " +
+                     "JOIN " +
+                     "    Order_item oi ON o.order_ID = oi.order_ID " +
+                     "WHERE " +
+                     "    YEAR(o.order_date) = YEAR(GETDATE()) " +
+                     "    AND MONTH(o.order_date) = MONTH(GETDATE()) " +
+                     "GROUP BY " +
+                     "    CONVERT(DATE, o.order_date) " +
+                     "ORDER BY " +
+                     "    order_date";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                String orderDate = rs.getString("order_date");
+                int dailyRevenueAmount = rs.getInt("daily_revenue");
+                dailyRevenue.put(orderDate, dailyRevenueAmount);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dailyRevenue;
+    }
+    
+     public double getTotalRevenueThisMonth() {
+        int totalRevenue = 0;
+        String sql = "SELECT SUM(quantity * price_unit) as total_revenue " +
+                     "FROM [Order] o JOIN Order_item oi ON o.order_ID = oi.order_ID " +
+                     "WHERE YEAR(o.order_date) = YEAR(GETDATE()) " +
+                     "AND MONTH(o.order_date) = MONTH(GETDATE())";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet rs = preparedStatement.executeQuery()) {
+            if (rs.next()) {
+                totalRevenue = rs.getInt("total_revenue");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRevenue;
+    }
+       
+       
+
+    
+
+   
+   
+
+
+
+    public static void main(String[] args) {
+      OrderDao orderDAO = new OrderDao();
+             
+            Map<String, Integer> orderCounts = orderDAO.getOrdersCountByStatusThisMonth();
+
+            // In kết quả ra màn hình
+            for (Map.Entry<String, Integer> entry : orderCounts.entrySet()) {
+                System.out.println("Order Status: " + entry.getKey() + ", Count: " + entry.getValue());
+            } 
+
+
 }
+    }

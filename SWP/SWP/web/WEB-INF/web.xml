@@ -208,6 +208,14 @@
         <servlet-name>Feedback2</servlet-name>
         <servlet-class>controllerr.Feedback2</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SalesReportController</servlet-name>
+        <servlet-class>controllerr.SalesReportController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportProductController</servlet-name>
+        <servlet-class>controllerr.ReportProductController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePage</servlet-name>
         <url-pattern>/HomePage</url-pattern>
@@ -415,6 +423,14 @@
     <servlet-mapping>
         <servlet-name>Feedback2</servlet-name>
         <url-pattern>/feedback2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalesReportController</servlet-name>
+        <url-pattern>/salesReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportProductController</servlet-name>
+        <url-pattern>/reportProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

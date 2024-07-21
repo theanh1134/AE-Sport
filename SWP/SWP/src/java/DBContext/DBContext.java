@@ -16,11 +16,13 @@ public abstract class DBContext {
 
     public DBContext() {
         try {
-            String url = "jdbc:sqlserver://MSI\\SQLEXPRESS:1433;databaseName=SWP;encrypt=true;trustServerCertificate=true; ";
-            String user = "phatmvp";
-            String pass = "123";
+
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(url, user, pass);
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=SWP";
+            String user = "sa";
+            String password = "12345";
+            connection = DriverManager.getConnection(url, user, password);
+            
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }

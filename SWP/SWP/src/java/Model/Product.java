@@ -4,7 +4,7 @@ public class Product {
 
     private int productID;
     private int feedbackID;
-    private double price;
+    private double price;  
     private String description;
     private String status;
     private int sportID;
@@ -15,13 +15,15 @@ public class Product {
     private int subcategoryID;
     private double import_price;
     private Discount discount;
-    private ImgProduct img;
+    private ImgProduct img; 
     private ProductSizeColor sizecolor;
+    private double revenue;
+    private int inventory_number;
 
     // Constructors
     public Product() {
     }
-
+    
     public Product(int productID, int feedbackID, double price, String description, String status, int sportID, String productName, int brandID, int quantity, int discountID, int subcategoryID, double import_price) {
         this.productID = productID;
         this.feedbackID = feedbackID;
@@ -72,9 +74,56 @@ public class Product {
         this.subcategoryID = subcategoryID;
     }
 
+    
+
+    public Product(int productID, double price, String description, String status, int sportID, String productName, int brandID, int subcategoryID, double import_price) {
+        this.productID = productID;
+        this.price = price;
+        this.description = description;
+        this.status = status;
+        this.sportID = sportID;
+        this.productName = productName;
+        this.brandID = brandID;
+        this.subcategoryID = subcategoryID;
+        this.import_price = import_price;
+    }
+
+    
+
+   
+    public Product(int productID, String productName, double revenue) {
+        this.productID = productID;
+        this.productName = productName;
+        this.revenue = revenue;
+    }
+
+    public Product(int productID, String productName, int quantity) {
+        this.productID = productID;
+        this.productName = productName;
+        this.quantity = quantity;
+    }
+
+    public Product(int productID, String productName, int quantity, int inventory_number) {
+        this.productID = productID;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.inventory_number = inventory_number;
+    }
+
+
+    
     public int getProductID() {
         return productID;
     }
+
+    public int getInventory_number() {
+        return inventory_number;
+    }
+
+    public void setInventory_number(int inventory_number) {
+        this.inventory_number = inventory_number;
+    }
+    
 
     public void setProductID(int productID) {
         this.productID = productID;
@@ -95,6 +144,18 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public double getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(double revenue) {
+        this.revenue = revenue;
+    }
+
+  
+
+   
 
     public String getDescription() {
         return description;
@@ -196,5 +257,6 @@ public class Product {
     public String toString() {
         return "Product{" + "productID=" + productID + ", feedbackID=" + feedbackID + ", price=" + price + ", description=" + description + ", status=" + status + ", sportID=" + sportID + ", productName=" + productName + ", brandID=" + brandID + ", quantity=" + quantity + ", discountID=" + discountID + ", subcategoryID=" + subcategoryID + ", import_price=" + import_price + ", discount=" + discount + ", img=" + img + ", sizecolor=" + sizecolor + '}';
     }
-
+    
+    
 }

@@ -16,7 +16,6 @@ public abstract class DBContext {
 
     public DBContext() {
         try {
-
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost:1433;databaseName=SWP";
             String user = "sa";
